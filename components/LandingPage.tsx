@@ -412,11 +412,7 @@ export default function LandingPage() {
 
                 <div className="space-y-6 text-neutral-400 font-light text-base md:text-lg leading-relaxed">
                   <p>{t.terroir.p1}</p>
-                  <p>
-                    {t.terroir.p2.split('Насиональ')[0] || t.terroir.p2.split('Nacional')[0]} 
-                    <strong className="text-white font-normal">{lang === 'ru' ? 'аутентичный сорт Насиональ' : 'authentic Nacional'}</strong>
-                    {t.terroir.p2.split('Насиональ')[1] || t.terroir.p2.split('Nacional')[1]}
-                  </p>
+                  <p>{t.terroir.p2}</p>
                   <p className="text-neutral-300 italic border-l-2 border-[#6b21a8] pl-6 mt-6">
                     {t.terroir.p3}
                   </p>
