@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Providers } from "@/components/providers/Providers";
 import "./globals.css";
 
 const inter = Inter({
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
       "We stop time. Authentic Nacional from the Amazon highlands of Ecuador.",
     url: "https://incatrailfoods.com",
     siteName: "The Inca Trail Foods",
-    locale: "ru_RU",
+    locale: "es_EC",
     type: "website",
   },
 };
@@ -35,8 +36,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${inter.variable} ${cormorant.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html lang="es" className={`${inter.variable} ${cormorant.variable}`}>
+      <body
+        className="antialiased"
+        style={{
+          margin: 0,
+          backgroundColor: "#030205",
+          color: "#e0e0e0",
+          minHeight: "100vh",
+        }}
+      >
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
