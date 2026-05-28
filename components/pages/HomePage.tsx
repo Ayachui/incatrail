@@ -29,6 +29,10 @@ export default function HomePage() {
   const { lang, t } = useLanguage();
   const { hasHeroVideo, hasHeroPoster, heroImageSrc, terroirImageSrc } =
     usePublicMedia();
+  const tznkPoolUrl =
+    "https://www.geckoterminal.com/base/pools/0xcffcde91e38fc427370de10183860d36b06030e1";
+  const philHighlight = lang === "ru" ? "Фиолетовое Золото" : lang === "es" ? "Oro Púrpura" : "Purple Gold";
+  const [philP2Before, philP2After = ""] = t.phil.p2.split(philHighlight);
 
   return (
     <>
@@ -121,17 +125,9 @@ export default function HomePage() {
                 <div className="space-y-6 text-neutral-400 font-light text-base md:text-lg leading-relaxed relative">
                   <p>{t.phil.p1}</p>
                   <p>
-                    {t.phil.p2.split('«Фиолетовое Золото»')[0]}
-                    {lang === "ru" ? (
-                      <strong className="text-white font-normal">«Фиолетовое Золото»</strong>
-                    ) : lang === "es" ? (
-                      <strong className="text-white font-normal">«Oro Púrpura»</strong>
-                    ) : (
-                      <strong className="text-white font-normal">
-                        {"'Purple Gold'"}
-                      </strong>
-                    )}
-                    {t.phil.p2.split('«Фиолетовое Золото»')[1] || t.phil.p2.split("'Purple Gold'")[1] || t.phil.p2.split("'Oro Púrpura'")[1]}
+                    {philP2Before}
+                    <strong className="text-white font-normal">{philHighlight}</strong>
+                    {philP2After}
                   </p>
                   <p>{t.phil.p3}</p>
                 </div>
@@ -433,7 +429,13 @@ export default function HomePage() {
                   <h2 className="text-3xl md:text-5xl font-serif text-white leading-tight">
                     {t.tznk.title1} <br/>{t.tznk.title2}
                   </h2>
-                  <div className="relative w-20 h-20 md:w-28 md:h-28 shrink-0">
+                  <a
+                    href={tznkPoolUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open TZNK pool on GeckoTerminal"
+                    className="relative w-20 h-20 md:w-28 md:h-28 shrink-0 block hover:opacity-90 transition-opacity"
+                  >
                     <Image
                       src="/media/logo tznk.png"
                       alt="TZNK logo"
@@ -441,15 +443,22 @@ export default function HomePage() {
                       sizes="(max-width: 768px) 80px, 112px"
                       className="object-contain opacity-95"
                     />
-                  </div>
+                  </a>
                 </div>
                 <div className="space-y-6 text-neutral-400 font-light text-base md:text-lg leading-relaxed">
                   <p>
-                    {t.tznk.p1.split('TZNK')[0]}<strong className="text-white font-normal">TZNK (tzunki.com)</strong>{t.tznk.p1.split('(tzunki.com)')[1] || t.tznk.p1.split('TZNK (tzunki.com)')[1]}
+                    {t.tznk.p1.split("TZNK")[0]}
+                    <a
+                      href={tznkPoolUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white font-normal underline decoration-[#9b59b6]/70 underline-offset-4 hover:text-[#c39bd3] transition-colors"
+                    >
+                      TZNK
+                    </a>
+                    {t.tznk.p1.split("TZNK")[1]}
                   </p>
-                  <p>
-                    {t.tznk.p2.split('—')[0]}— <strong className="text-white font-normal">{t.tznk.p2.split('—')[1]}</strong>
-                  </p>
+                  <p>{t.tznk.p2}</p>
                 </div>
               </div>
             </FadeIn>
