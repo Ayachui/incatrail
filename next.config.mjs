@@ -23,6 +23,24 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      { source: "/life", destination: "/life/index.html" },
+      { source: "/life/", destination: "/life/index.html" },
+    ];
+  },
+  async headers() {
+    const noIndex = [
+      {
+        key: "X-Robots-Tag",
+        value: "noindex, nofollow, noarchive, nosnippet",
+      },
+    ];
+    return [
+      { source: "/life", headers: noIndex },
+      { source: "/life/:path*", headers: noIndex },
+    ];
+  },
 };
 
 export default nextConfig;
