@@ -562,7 +562,7 @@ export default function HomePage() {
               <Carousel
                 images={TRABAJO_GALLERY}
                 autoPlayMs={5000}
-                aspectRatio="4000 / 1848"
+                aspectRatio="800 / 370"
                 interlaced
                 scanlines
                 label={t.tznk.galleryTitle}

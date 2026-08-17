@@ -58,7 +58,7 @@ export const translations = {
       th1: "Параметр",
       th2: "Индустриальный",
       th3: "Fine Flavor (Традиция)",
-      th4: "Inca Trail",
+      th4: "FMAD The Inca Trail",
       table1: [
         {
           p: "Ферментация",
@@ -121,7 +121,7 @@ export const translations = {
       galleryPre: "Проект Tzunki",
       galleryTitle: "Наша социальная работа",
       galleryDesc:
-        "Это не кадры производства. Это живая хроника проекта Tzunki: люди общин Шуар, их быт, дети и совместный труд по сохранению леса Амазонии.",
+        "Частным образом мы помогаем амазонским общинам создавать безопасную и здоровую среду: передаём знания и медикаменты для борьбы с дефицитами и эпидемиями. Мы дружим с коренными жителями Амазонии — и они отвечают нам взаимностью.",
     },
     usage: {
       title: "Векторы применения",
@@ -198,7 +198,7 @@ export const translations = {
       th1: "Parameter",
       th2: "Industrial",
       th3: "Fine Flavor (Tradition)",
-      th4: "Inca Trail",
+      th4: "FMAD The Inca Trail",
       table1: [
         {
           p: "Fermentation",
@@ -261,7 +261,7 @@ export const translations = {
       galleryPre: "Tzunki Project",
       galleryTitle: "Our Social Work",
       galleryDesc:
-        "These are not production shots. This is the living chronicle of the Tzunki project: the Shuar people, their daily life, their children and our shared work to protect the Amazon rainforest.",
+        "Privately, we help Amazonian communities build a safer, healthier environment — sharing knowledge and medicines to fight deficiencies and epidemics. We are friends with the Indigenous peoples of the Amazon, and they meet us with the same reciprocity.",
     },
     usage: {
       title: "Application Vectors",
@@ -338,7 +338,7 @@ export const translations = {
       th1: "Parámetro",
       th2: "Industrial",
       th3: "Fine Flavor (Tradición)",
-      th4: "Inca Trail",
+      th4: "FMAD The Inca Trail",
       table1: [
         {
           p: "Fermentación",
@@ -401,7 +401,7 @@ export const translations = {
       galleryPre: "Proyecto Tzunki",
       galleryTitle: "Nuestra labor social",
       galleryDesc:
-        "No son imágenes de la planta. Es la crónica viva del proyecto Tzunki: el pueblo Shuar, su vida cotidiana, sus niños y el trabajo compartido para proteger la selva amazónica.",
+        "De forma privada ayudamos a las comunidades amazónicas a crear un entorno seguro y saludable: compartimos conocimiento y medicamentos para combatir deficiencias y epidemias. Somos amigos de los pueblos originarios de la Amazonia, y ellos nos corresponden con la misma reciprocidad.",
     },
     usage: {
       title: "Vectores de aplicación",
