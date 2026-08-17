@@ -151,7 +151,7 @@ export function Carousel({
           {images.map((image, slideIndex) => {
             const isActive = slideIndex === index;
             // Slides are translated outside the clipping box, so lazy loading
-            // never triggers for neighbours — preload them to avoid a flash.
+            // never triggers for neighbours - preload them to avoid a flash.
             const distance = Math.min(
               Math.abs(slideIndex - index),
               total - Math.abs(slideIndex - index)

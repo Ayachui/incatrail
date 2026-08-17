@@ -5,7 +5,7 @@ import { ImageResponse } from "next/og";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 export const OG_ALT =
-  "The Inca Trail Foods — Purple Gold: unfermented Nacional cacao from Zamora Chinchipe, Ecuador";
+  "The Inca Trail Foods - Purple Gold: unfermented Nacional cacao from Zamora Chinchipe, Ecuador";
 
 /** Fonts live outside /public so they are only read during build-time rendering. */
 const loadFont = (file: string) =>
@@ -153,7 +153,7 @@ export async function renderOgImage() {
                 color: "#a3a3a3",
               }}
             >
-              Unfermented Nacional cacao. Seven hours from tree to sealed bean —
+              Unfermented Nacional cacao. Seven hours from tree to sealed bean -
               the full native matrix preserved.
             </div>
           </div>

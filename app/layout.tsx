@@ -16,9 +16,9 @@ const cormorant = Cormorant_Garamond({
 
 const SITE_URL = "https://incatrailfoods.com";
 const SITE_DESCRIPTION =
-  "Original Nacional cacao from Zamora Chinchipe — FMAD technology, 7-hour tree-to-bean cycle, zero fermentation, full anthocyanin preservation.";
+  "Original Nacional cacao from Zamora Chinchipe - FMAD technology, 7-hour tree-to-bean cycle, zero fermentation, full anthocyanin preservation.";
 const SOCIAL_DESCRIPTION =
-  "We stop time. Authentic Nacional from the Amazon highlands of Ecuador — unfermented, cryo-fixed, fully traceable.";
+  "We stop time. Authentic Nacional from the Amazon highlands of Ecuador - unfermented, cryo-fixed, fully traceable.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

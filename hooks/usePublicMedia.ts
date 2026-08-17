@@ -11,7 +11,7 @@ export const MEDIA = {
 
 export const FALLBACK_HERO_IMAGE =
   "https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=1920";
-/** Pexels slug for this id changed (404); keep Unsplash — allowed in next.config */
+/** Pexels slug for this id changed (404); keep Unsplash - allowed in next.config */
 export const FALLBACK_TERROIR_IMAGE =
   "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80";
 
