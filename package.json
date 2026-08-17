@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "clean": "node -e \"const fs=require('fs');const rm=(p)=>{try{fs.rmSync(p,{recursive:true,force:true})}catch(e){}};rm('.next');rm('node_modules/.cache')\"",
+    "clean": "node -e \"const fs=require('fs');const rm=(p)=>{try{fs.rmSync(p,{recursive:true,force:true})}catch(e){}};rm('.next');rm('.next-verify');rm('node_modules/.cache')\"",
+    "postinstall": "node scripts/patch-vercel-og.mjs",
     "dev": "next dev",
     "dev:clean": "npm run clean && next dev",
     "build": "next build",

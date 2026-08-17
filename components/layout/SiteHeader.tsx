@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export function SiteHeader() {
@@ -9,14 +10,7 @@ export function SiteHeader() {
   return (
     <nav className="fixed w-full z-50 top-0 transition-all duration-500 bg-[#030205]/80 backdrop-blur-xl border-b border-[#3b1c4a]/30">
       <div className="max-w-7xl mx-auto px-6 h-20 md:h-24 flex items-center justify-between">
-        <Link href="/" className="flex flex-col hover:opacity-90 transition-opacity">
-          <span className="text-xl md:text-2xl font-light tracking-[0.25em] text-white uppercase font-serif">
-            THE INCA TRAIL
-          </span>
-          <span className="text-[9px] md:text-[10px] tracking-[0.3em] text-[#9b59b6] uppercase mt-1">
-            Ecuador • Zamora
-          </span>
-        </Link>
+        <BrandLogo />
 
         <div className="hidden lg:flex gap-8 text-[11px] font-light tracking-[0.15em] uppercase text-neutral-400">
           <Link

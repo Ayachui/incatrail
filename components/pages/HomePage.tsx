@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   Leaf,
   ChevronDown,
+  Download,
   Mountain,
   FlaskConical,
   Sparkles,
@@ -19,16 +20,25 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { Carousel } from "@/components/ui/Carousel";
+import { CACAO_GALLERY } from "@/lib/media/cacaoGallery";
+import { TRABAJO_GALLERY } from "@/lib/media/trabajoGallery";
 import {
   MEDIA,
   heroMediaClass,
   usePublicMedia,
 } from "@/hooks/usePublicMedia";
+import type { Lang } from "@/lib/i18n/translations";
+
+const PORTFOLIO_PDF: Record<Lang, string> = {
+  ru: "/the-inca-trail-b2b-portfolio-v4-ru.pdf",
+  en: "/the-inca-trail-b2b-portfolio-v4-en.pdf",
+  es: "/the-inca-trail-b2b-portfolio-v4-es.pdf",
+};
 
 export default function HomePage() {
   const { lang, t } = useLanguage();
-  const { hasHeroVideo, hasHeroPoster, heroImageSrc, terroirImageSrc } =
-    usePublicMedia();
+  const { hasHeroVideo, hasHeroPoster, heroImageSrc } = usePublicMedia();
   const tznkPoolUrl =
     "https://www.geckoterminal.com/base/pools/0xcffcde91e38fc427370de10183860d36b06030e1";
   const philHighlight = lang === "ru" ? "Фиолетовое Золото" : lang === "es" ? "Oro Púrpura" : "Purple Gold";
@@ -93,19 +103,42 @@ export default function HomePage() {
           </FadeIn>
           
           <FadeIn delay={0.5} duration={1.5}>
-            <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif text-white leading-[1.1] mb-8 font-light">
-              {t.hero.title1} <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#c39bd3] to-[#7d3c98]">{t.hero.title2}</span>
+            <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif text-white leading-[1.15] mb-8 font-light overflow-visible">
+              {t.hero.title1}{" "}
+              <span
+                className="italic inline-block pr-[0.18em] pt-[0.06em] text-transparent bg-clip-text bg-gradient-to-r from-[#c39bd3] to-[#7d3c98] box-decoration-clone [-webkit-box-decoration-break:clone]"
+              >
+                {t.hero.title2}
+              </span>
             </h1>
           </FadeIn>
           
           <FadeIn delay={0.8} duration={1.5}>
-            <p className="text-base md:text-xl text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed mb-16">
+            <p className="text-base md:text-xl text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed mb-10">
               {t.hero.desc}
             </p>
           </FadeIn>
+
+          <FadeIn delay={1.0} duration={1.5}>
+            <div className="flex justify-center">
+              <a
+                href={PORTFOLIO_PDF[lang]}
+                download
+                className="group inline-flex w-fit items-center gap-2 px-5 py-3 border border-[#6b21a8]/80 text-[#c39bd3] text-xs md:text-sm font-light tracking-[0.12em] uppercase bg-[#6b21a8]/10 backdrop-blur-sm hover:bg-[#6b21a8] hover:text-white hover:border-[#6b21a8] transition-all duration-500 shadow-[0_0_30px_rgba(107,33,168,0.15)] hover:shadow-[0_0_40px_rgba(107,33,168,0.35)]"
+              >
+                <Download
+                  size={15}
+                  strokeWidth={1}
+                  className="shrink-0 transition-transform duration-500 group-hover:translate-y-0.5"
+                  aria-hidden
+                />
+                {t.hero.downloadSheet}
+              </a>
+            </div>
+          </FadeIn>
         </div>
 
-        <FadeIn delay={1.1} duration={1.5}>
+        <FadeIn delay={1.3} duration={1.5}>
           <a href="#philosophy" className="relative z-10 flex items-center justify-center text-[#9b59b6] hover:text-white transition-colors duration-500 cursor-pointer p-4">
             <ChevronDown size={32} className="animate-bounce font-light" strokeWidth={1} />
           </a>
@@ -166,17 +199,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-20 items-center">
             <FadeIn direction="right">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-[#3b1c4a]/50 group">
-                <div className="absolute inset-0 bg-[#4a235a]/10 group-hover:bg-transparent transition-colors duration-1000 z-10 pointer-events-none"></div>
-                <Image
-                  src={terroirImageSrc}
-                  alt="Zamora Chinchipe — Amazon forest / Bosque Amazónico"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover opacity-80 grayscale-[20%] group-hover:scale-105 transition-transform duration-1000"
-                  priority
-                />
-              </div>
+              <Carousel
+                images={CACAO_GALLERY}
+                autoPlayMs={6000}
+                aspectRatio="4 / 5"
+                interlaced
+                scanlines
+                label={t.terroir.title1}
+              />
             </FadeIn>
 
             <FadeIn direction="left" delay={0.2}>
@@ -204,7 +234,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The 10-Hour Rule (Process) */}
+      {/* The 7-Hour Rule (Process) */}
       <section id="process" className="py-24 md:py-32 bg-[#020104] relative border-y border-[#3b1c4a]/30 overflow-hidden">
         <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#4a235a]/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -266,7 +296,7 @@ export default function HomePage() {
               <FadeIn delay={0.5}>
                 <div className="bg-[#0a0612] border border-[#3b1c4a]/50 p-8 md:p-10 relative group hover:border-[#c39bd3]/50 transition-colors duration-500 h-full flex flex-col items-center">
                   <div className="md:absolute md:top-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-[#020104] px-4 mb-6 md:mb-0">
-                    <span className="text-[#c39bd3] font-serif italic text-2xl">10h</span>
+                    <span className="text-[#c39bd3] font-serif italic text-2xl">7h</span>
                   </div>
                   <h4 className="text-xl font-serif text-white text-center mt-2 md:mt-6 mb-4">{t.process.s3}</h4>
                   <p className="text-neutral-400 text-sm font-light text-center leading-relaxed flex-grow">
@@ -510,6 +540,35 @@ export default function HomePage() {
               </div>
             </FadeIn>
           </div>
+
+          <FadeIn delay={0.3} direction="up">
+            <div className="mt-20 md:mt-28 max-w-5xl mx-auto">
+              <div className="mb-10 md:mb-12 text-center">
+                <div className="inline-flex items-center gap-3 mb-6">
+                  <div className="w-8 h-[1px] bg-[#9b59b6]"></div>
+                  <p className="text-[#c39bd3] text-xs font-light tracking-[0.2em] uppercase">
+                    {t.tznk.galleryPre}
+                  </p>
+                  <div className="w-8 h-[1px] bg-[#9b59b6]"></div>
+                </div>
+                <h3 className="text-2xl md:text-4xl font-serif text-white mb-4 leading-tight">
+                  {t.tznk.galleryTitle}
+                </h3>
+                <p className="text-neutral-400 font-light text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+                  {t.tznk.galleryDesc}
+                </p>
+              </div>
+
+              <Carousel
+                images={TRABAJO_GALLERY}
+                autoPlayMs={5000}
+                aspectRatio="4000 / 1848"
+                interlaced
+                scanlines
+                label={t.tznk.galleryTitle}
+              />
+            </div>
+          </FadeIn>
         </div>
       </section>
 

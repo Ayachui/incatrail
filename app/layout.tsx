@@ -14,19 +14,46 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
 });
 
+const SITE_URL = "https://incatrailfoods.com";
+const SITE_DESCRIPTION =
+  "Original Nacional cacao from Zamora Chinchipe — FMAD technology, 7-hour tree-to-bean cycle, zero fermentation, full anthocyanin preservation.";
+const SOCIAL_DESCRIPTION =
+  "We stop time. Authentic Nacional from the Amazon highlands of Ecuador — unfermented, cryo-fixed, fully traceable.";
+
 export const metadata: Metadata = {
-  title: "The Inca Trail Foods | Purple Gold Cacao",
-  description:
-    "Original Nacional cacao from Zamora Chinchipe — cryo-fixed biochemistry, zero fermentation, full anthocyanin preservation.",
-  metadataBase: new URL("https://incatrailfoods.com"),
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "The Inca Trail Foods | Purple Gold Cacao",
+    template: "%s | The Inca Trail Foods",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: "The Inca Trail Foods",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "The Inca Trail Foods | Purple Gold",
-    description:
-      "We stop time. Authentic Nacional from the Amazon highlands of Ecuador.",
-    url: "https://incatrailfoods.com",
+    description: SOCIAL_DESCRIPTION,
+    url: SITE_URL,
     siteName: "The Inca Trail Foods",
     locale: "es_EC",
+    alternateLocale: ["en_US", "ru_RU"],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Inca Trail Foods | Purple Gold",
+    description: SOCIAL_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

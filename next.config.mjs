@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // Avoid corrupt / stale webpack filesystem cache on Windows after route refactors
   // (ENOENT for .next/server/app/page.js, missing vendor-chunks, white screen in dev).
   webpack: (config, { dev }) => {
