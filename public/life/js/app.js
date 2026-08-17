@@ -133,9 +133,15 @@
 
   function legend() {
     const items = app.mode === "classic"
-      ? [["#7dffc2", "живая клетка"], ["#ffd45c", "цель"]]
-      : [["#5dff8a", "растения"], ["#ffc14d", "зайцы"], ["#ff5d7a", "лисы"], ["#4db8ff", "вода"], ["#8aa0b0", "камень"]];
-    $("legend").innerHTML = items.map(([c, n]) => `<span><i style="background:${c}"></i>${n}</span>`).join("");
+      ? [["✨", "живая клетка"], ["★", "цель"]]
+      : [
+        ["🌱", "растения"], ["🐰", "зайцы"], ["🦊", "лисы"], ["💧", "вода"], ["🪨", "камень"],
+        ["ring:#ffd45c", "зоркий"], ["ring:#ff5d7a", "прожорливый"], ["ring:#3ee0a2", "экономный"], ["ring:#8ea0d8", "близорукий"]
+      ];
+    $("legend").innerHTML = items.map(([mark, n]) => {
+      if (mark.startsWith("ring:")) return `<span><i class="ring" style="border-color:${mark.slice(5)}"></i>${n}</span>`;
+      return `<span>${mark} ${n}</span>`;
+    }).join("");
   }
 
   function setupWorld(mode, mission) {
@@ -173,7 +179,7 @@
       $("game-subtitle").textContent = "Лабораторный журнал";
       $("hud-goal-title").textContent = "Свободный опыт";
       $("hud-goal").textContent = "Собери пищевую цепь и следи за приборами: сытость, жизнеспособность, мутанты.";
-      $("hud-hint").textContent = "Вода ускоряет лес у берега и делит чашку как река. Камень — забор. Мутируют только зайцы и лисы при рождении.";
+      $("hud-hint").textContent = "Вода ускоряет лес у берега и делит чашку как река. Камень — забор. Цветное кольцо у зайца или лисы — мутация.";
     }
     renderStarsPreview();
     renderTools();
@@ -273,6 +279,7 @@
   function draw() {
     const w = app.world;
     const s = app.cell;
+    const T = LIFE_TYPES;
     ctx.clearRect(0, 0, COLS * s, ROWS * s);
     ctx.fillStyle = "#08151d";
     ctx.fillRect(0, 0, COLS * s, ROWS * s);
@@ -284,50 +291,36 @@
       ctx.fill();
     }
 
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = `${Math.max(11, Math.floor(s * 0.92))}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`;
+
     for (let y = 0; y < w.h; y++) {
       for (let x = 0; x < w.w; x++) {
         const t = w.get(x, y);
-        if (t === EMPTY) continue;
-        if (t === WALL) {
-          ctx.fillStyle = w.dish && !w.inDish(x, y) ? "#0a1820" : "#6d8494";
-          ctx.fillRect(x * s, y * s, s, s);
-        } else if (t === WATER) {
-          ctx.fillStyle = "rgba(77,184,255,0.55)";
-          round(x * s + 1, y * s + 1, s - 2, s - 2, 4);
-        } else if (t === PLANT) {
-          ctx.fillStyle = app.mode === "classic" ? "#7dffc2" : "#46e887";
-          ctx.shadowColor = "#46e887";
-          ctx.shadowBlur = 6;
-          round(x * s + 1, y * s + 1, s - 2, s - 2, 3);
-          ctx.shadowBlur = 0;
+        if (t === T.EMPTY) continue;
+        if (t === T.WALL) {
+          if (w.dish && !w.inDish(x, y)) {
+            ctx.fillStyle = "#0a1820";
+            ctx.fillRect(x * s, y * s, s, s);
+          } else {
+            drawEmoji("🪨", x, y, s);
+          }
+        } else if (t === T.WATER) {
+          drawEmoji("💧", x, y, s, 0.95);
+        } else if (t === T.PLANT) {
+          if (app.mode === "classic") drawEmoji("✨", x, y, s);
+          else drawEmoji(plantEmoji(x, y), x, y, s);
         }
       }
     }
 
     for (const a of w.agents) {
       if (a.dead) continue;
-      const cx = (a.x + 0.5) * s;
-      const cy = (a.y + 0.5) * s;
       const sat = Math.min(1, a.energy / Math.max(0.2, a.thresh || 11));
-      ctx.globalAlpha = 0.42 + 0.58 * sat;
-      ctx.fillStyle = `hsl(${a.hue} 90% 62%)`;
-      ctx.shadowColor = ctx.fillStyle;
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.arc(cx, cy, s * (0.36 + 0.08 * sat), 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.globalAlpha = 1;
-      if (a.mutated || a.trait) {
-        ctx.strokeStyle = "#f7fff4";
-        ctx.lineWidth = Math.max(1.5, s * 0.12);
-        ctx.beginPath();
-        ctx.arc(cx, cy, s * 0.48, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      ctx.fillStyle = "#fff";
-      ctx.beginPath(); ctx.arc(cx - s * 0.12, cy - s * 0.08, s * 0.08, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(cx + s * 0.12, cy - s * 0.08, s * 0.08, 0, Math.PI * 2); ctx.fill();
+      if (a.trait) drawTraitRing(a.x, a.y, s, a.trait);
+      const icon = a.kind === T.PRED ? "🦊" : "🐰";
+      drawEmoji(icon, a.x, a.y, s, 0.45 + 0.55 * sat, 0.88 + 0.1 * sat);
     }
 
     if (app.inspect && app.mode === "eco") {
@@ -342,9 +335,7 @@
       ctx.setLineDash([6, 4]);
       ctx.strokeRect(w.target.x * s, w.target.y * s, w.target.w * s, w.target.h * s);
       ctx.setLineDash([]);
-      ctx.fillStyle = "#ffd45c";
-      ctx.font = `700 ${Math.max(12, s)}px Nunito`;
-      ctx.fillText("★", (w.target.x + w.target.w / 2) * s - 6, (w.target.y + w.target.h / 2) * s);
+      drawEmoji("⭐", w.target.x + w.target.w / 2 - 0.5, w.target.y + w.target.h / 2 - 0.5, s);
     }
 
     if (w.dish) {
@@ -359,17 +350,40 @@
       ctx.globalAlpha = p.t;
       ctx.fillStyle = p.color;
       ctx.beginPath();
-      ctx.arc((p.x + 0.5) * s, (p.y + 0.5) * s, s * p.t, 0, Math.PI * 2);
+      ctx.arc((p.x + 0.5) * s, (p.y + 0.5) * s, s * 0.35 * p.t, 0, Math.PI * 2);
       ctx.fill();
       ctx.globalAlpha = 1;
     }
   }
 
-  function round(x, y, w, h, r) {
+  function plantEmoji(x, y) {
+    const plants = LIFE_DATA.plants;
+    return plants[Math.abs(x * 13 + y * 7) % plants.length];
+  }
+
+  function drawEmoji(emoji, x, y, s, alpha = 1, scale = 1) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.font = `${Math.max(10, Math.floor(s * 0.92 * scale))}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(emoji, (x + 0.5) * s, (y + 0.55) * s);
+    ctx.restore();
+  }
+
+  function drawTraitRing(x, y, s, trait) {
+    const color = LIFE_DATA.traitRing[trait];
+    if (!color) return;
+    const cx = (x + 0.5) * s;
+    const cy = (y + 0.5) * s;
     ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
-    else ctx.rect(x, y, w, h);
-    ctx.fill();
+    ctx.arc(cx, cy, s * 0.48, 0, Math.PI * 2);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = Math.max(2.2, s * 0.16);
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
   }
 
   function updateStats() {
@@ -418,7 +432,7 @@
       </div>
       <div class="meter">
         <div class="row"><span>Мутанты сейчас</span><strong>зайцы ${a.mutHerb} · лисы ${a.mutPred}</strong></div>
-        <p class="note">Растения не мутируют. Характер (зоркий, прожорливый, экономный, близорукий) появляется у детёныша и может передаться детям. Белое кольцо — не обычный зверь. Всего событий: ${a.mutEvents}.</p>
+        <p class="note">Растения не мутируют. Кольцо у зверя — характер: жёлтое зоркий, красное прожорливый, зелёное экономный, синее близорукий. Всего событий: ${a.mutEvents}.</p>
       </div>
     `;
     renderInspect();
