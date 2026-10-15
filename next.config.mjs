@@ -27,6 +27,8 @@ const nextConfig = {
     return [
       { source: "/life", destination: "/life/index.html" },
       { source: "/life/", destination: "/life/index.html" },
+      { source: "/pastacalc", destination: "/pastacalc/index.html" },
+      { source: "/pastacalc/", destination: "/pastacalc/index.html" },
     ];
   },
   async headers() {
@@ -39,6 +41,8 @@ const nextConfig = {
     return [
       { source: "/life", headers: noIndex },
       { source: "/life/:path*", headers: noIndex },
+      { source: "/pastacalc", headers: noIndex },
+      { source: "/pastacalc/:path*", headers: noIndex },
     ];
   },
 };
