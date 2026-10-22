@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
-  <title>CACAO ZAMORA — Lab OS v4.0</title>
+  <title>CACAO ZAMORA — Lab OS v6.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
@@ -62,7 +60,7 @@
         <div>
           <div class="flex items-center gap-1.5">
             <h1 class="font-serif text-lg md:text-xl font-bold tracking-wide text-textCream leading-none">CACAO ZAMORA</h1>
-            <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-gold/15 text-gold border border-gold/30">Lab OS v4.0</span>
+            <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-gold/15 text-gold border border-gold/30">Lab OS v6.0</span>
           </div>
           <p id="activeRecipeSubtitle" class="text-[11px] text-textMuted truncate max-w-[190px] sm:max-w-xs">Грибы + Куркума (Нейрогенез 70%)</p>
         </div>
@@ -70,7 +68,7 @@
 
       <div class="flex items-center gap-2">
         <div class="text-right bg-cardDark px-2.5 py-1 rounded-lg gold-border">
-          <div class="text-[10px] text-textMuted uppercase leading-tight">Выход / Доля какао</div>
+          <div id="headerCacaoLabel" class="text-[10px] text-textMuted uppercase leading-tight">Выход / Паста (Какао)</div>
           <div class="font-mono text-xs sm:text-sm font-bold text-gold">
             <span id="headerTotalMass">1000.0</span> г <span class="text-white/40">|</span> <span id="headerCacaoPct" class="text-purple-300">70.0%</span>
           </div>
@@ -97,7 +95,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="inline-flex rounded-lg bg-bgDark p-0.5 border border-white/10 w-full sm:w-auto">
             <button id="modeCacaoBtn" onclick="setCalcMode('cacao')" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-xs font-medium transition bg-gold text-bgDark font-semibold">
-              От базы Какао (100%)
+              От базы Пасты/Бобов (100%)
             </button>
             <button id="modeTotalBtn" onclick="setCalcMode('total')" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-xs font-medium transition text-textMuted hover:text-white">
               От выхода партии (г)
@@ -115,25 +113,28 @@
           </div>
         </div>
 
-        <!-- Master Input & Quick Presets -->
+        <!-- Master Input & Quick Presets (200g block multiples + 1100g bowl) -->
         <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center pt-1 border-t border-white/5">
           <div class="sm:col-span-5">
             <label id="anchorInputLabel" class="block text-[11px] uppercase tracking-wider text-gold font-mono">База Какао 100% (г):</label>
             <div class="mt-1 flex items-center gap-1.5">
-              <button onclick="nudgeAnchor(-50)" class="step-btn w-9 h-9 rounded-lg bg-bgDark border border-white/15 font-mono text-base font-bold text-textCream">−</button>
-              <input id="anchorMassInput" type="number" step="10" value="700" oninput="onAnchorInput(this.value)" class="w-full h-9 rounded-lg bg-bgDark border border-gold/50 px-3 font-mono text-base font-bold text-gold text-center focus:outline-none">
-              <button onclick="nudgeAnchor(50)" class="step-btn w-9 h-9 rounded-lg bg-bgDark border border-white/15 font-mono text-base font-bold text-textCream">+</button>
+              <button onclick="nudgeAnchor(-100)" class="step-btn w-9 h-9 rounded-lg bg-bgDark border border-white/15 font-mono text-base font-bold text-textCream">−</button>
+              <input id="anchorMassInput" type="number" step="10" value="1000" oninput="onAnchorInput(this.value)" class="w-full h-9 rounded-lg bg-bgDark border border-gold/50 px-3 font-mono text-base font-bold text-gold text-center focus:outline-none">
+              <button onclick="nudgeAnchor(100)" class="step-btn w-9 h-9 rounded-lg bg-bgDark border border-white/15 font-mono text-base font-bold text-textCream">+</button>
             </div>
           </div>
 
           <div class="sm:col-span-7">
-            <div class="text-[11px] text-textMuted mb-1">Быстрые загрузки цеха:</div>
+            <div class="flex items-center justify-between text-[11px] text-textMuted mb-1">
+              <span>Быстрые загрузки (под блоки пасты 200г и чашу):</span>
+              <span id="blocksIndicatorTop" class="font-mono text-purple-300">3.5 блока по 200г</span>
+            </div>
             <div class="grid grid-cols-5 gap-1.5 font-mono text-xs">
-              <button onclick="applyPresetMass(300)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-white/10 text-textCream">300г</button>
-              <button onclick="applyPresetMass(700)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-white/10 text-textCream">700г</button>
-              <button onclick="applyPresetMass(1000)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-white/10 text-textCream">1000г</button>
-              <button onclick="applyPresetMass(1100)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-gold/40 text-gold">1100г</button>
-              <button onclick="applyPresetMass(3000)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-white/10 text-textCream">3.0кг</button>
+              <button onclick="applyPresetCacaoBlocks(3)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-purple-500/30 text-purple-200" title="3 блока пасты по 200г">600г (3бл)</button>
+              <button onclick="applyPresetCacaoBlocks(4)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-purple-500/30 text-purple-200" title="4 блока пасты по 200г">800г (4бл)</button>
+              <button onclick="applyPresetCacaoBlocks(5)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-gold/40 text-gold" title="5 блоков пасты по 200г">1000г (5бл)</button>
+              <button onclick="applyPresetMass(1100)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-white/10 text-textCream" title="Классическая чаша 1100г бобов">1100г чаша</button>
+              <button onclick="applyPresetCacaoBlocks(10)" class="py-1.5 rounded-lg bg-bgDark hover:bg-white/5 border border-white/10 text-textCream" title="10 блоков пасты по 200г">2000г (10бл)</button>
             </div>
           </div>
         </div>
@@ -181,12 +182,17 @@
       <div class="bg-cardDark rounded-xl gold-border overflow-hidden">
         <div class="px-3 py-2.5 bg-cardAlt border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold uppercase tracking-wider text-gold">Матрица по пекарскому принципу</span>
-            <span class="text-[11px] text-textMuted hidden sm:inline">(меняйте любое поле — пересчет мгновенный)</span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-gold">Матрица по пекарскому принципу (Паста/Бобы = 100%)</span>
           </div>
-          <button id="rheologyFixBtn" onclick="applyButterWedge()" class="hidden text-[11px] font-mono px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/50 hover:bg-amber-500/30 transition">
-            ⚡ Ввести +4% ВМС-масла (клин текучести)
-          </button>
+          <!-- Smart Oil Options: 3% Micro-Wedge vs 10% Express Butter -->
+          <div id="oilQuickActions" class="flex flex-wrap gap-1.5">
+            <button onclick="applyButterWedge(3.0)" class="text-[10px] font-mono px-2 py-1 rounded bg-purple-900/40 text-purple-200 border border-purple-400/40 hover:bg-purple-900/60 transition" title="Микро-клин 3% для Spice Blooming без потери SGLT1">
+              +3% масло (Spice Blooming клин)
+            </button>
+            <button onclick="applyButterWedge(10.0)" class="text-[10px] font-mono px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 hover:bg-amber-500/30 transition" title="Классический жидкий старт 10% от общей массы">
+              +10% масло (Шоколадный старт)
+            </button>
+          </div>
         </div>
 
         <div class="hidden md:grid md:grid-cols-12 gap-2 px-3 py-2 bg-bgDark/60 text-[11px] font-mono uppercase text-textMuted border-b border-white/5">
@@ -202,15 +208,18 @@
         <!-- Totals Footer -->
         <div class="p-3 bg-bgDark/90 border-t border-gold/30 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <div class="text-[11px] text-textMuted uppercase font-mono">Итоговая формула матрицы</div>
+            <div class="text-[11px] text-textMuted uppercase font-mono">Итоговая формула матрицы (без Шелка)</div>
             <div class="text-xs text-textCream mt-0.5">
               Пекарская сумма: <span id="footerBakerSum" class="font-mono font-bold text-gold">142.86%</span>
+              <span class="mx-1.5 text-white/20">|</span>
+              Паста: <span id="footerPastePct" class="font-mono font-bold text-purple-300">70.0%</span>
+              <span id="footerTotalCacaoSpan" class="font-mono text-amber-300 ml-1"></span>
               <span class="mx-1.5 text-white/20">|</span>
               Порций по <span class="portion-label-inline">20</span>г: <span id="footerPortionCount" class="font-mono font-bold text-purple-300">50.0 шт</span>
             </div>
           </div>
           <div class="text-right">
-            <div class="text-[10px] text-textMuted uppercase font-mono">Теоретический выход</div>
+            <div class="text-[10px] text-textMuted uppercase font-mono">Базовый выход (+ Шелк <span id="footerSilkGrams">8.0</span>г)</div>
             <div class="font-mono text-lg font-bold text-gold"><span id="footerTotalGrams">1000.0</span> г</div>
           </div>
         </div>
@@ -218,7 +227,6 @@
 
       <!-- LIVE CUT-TEST & DYNAMIC BIO-SYNERGY ENGINE -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5">
-        <!-- Cut-Test & Rheology (5 cols) -->
         <div class="md:col-span-5 bg-cardDark rounded-xl p-3.5 gold-border space-y-3">
           <div class="flex items-center justify-between">
             <h3 class="text-xs font-mono uppercase tracking-wider text-gold">🎨 Симулятор среза и Реологии</h3>
@@ -228,7 +236,7 @@
           <div class="flex items-center gap-3 bg-bgDark p-2.5 rounded-xl border border-white/10">
             <div id="visualBarSample" class="w-16 h-14 rounded-lg shadow-lg border border-white/20 flex-shrink-0 flex flex-col items-center justify-center transition-all duration-300" style="background: linear-gradient(135deg, #4C1D95 0%, #2E1065 60%, #1E1B4B 100%);">
               <span class="text-[9px] font-mono uppercase tracking-widest text-white/80">ZAMORA</span>
-              <span id="visualBarFatLabel" class="text-xs font-mono font-bold text-white">37.1%</span>
+              <span id="visualBarFatLabel" class="text-xs font-mono font-bold text-white">35.0%</span>
             </div>
             <div class="text-xs space-y-1">
               <div id="visualColorTitle" class="font-semibold text-textCream">Глубокий фиолетово-рубиновый срез</div>
@@ -238,40 +246,152 @@
 
           <div class="space-y-1.5 text-xs">
             <div class="flex justify-between font-mono text-[11px]">
-              <span class="text-textMuted">Жирность / Сухие пудры:</span>
-              <span id="fatPercentReadout" class="text-gold font-bold">37.1% жиров | 28.5% пудр</span>
+              <span class="text-textMuted">Общий жир / Сухие пудры:</span>
+              <span id="fatPercentReadout" class="text-gold font-bold">35.0% жиров | 30.0% пудр</span>
             </div>
             <div class="w-full h-2 bg-bgDark rounded-full overflow-hidden flex border border-white/10">
-              <div id="fatBarFill" class="bg-amber-400 h-full transition-all" style="width: 37%"></div>
-              <div id="sugarBarFill" class="bg-purple-500 h-full transition-all" style="width: 28%"></div>
+              <div id="fatBarFill" class="bg-amber-400 h-full transition-all" style="width: 35%"></div>
+              <div id="sugarBarFill" class="bg-purple-500 h-full transition-all" style="width: 30%"></div>
             </div>
             <p id="rheologyAdviceText" class="text-[11px] text-textMuted leading-relaxed"></p>
           </div>
         </div>
 
-        <!-- Dynamic Bio-Synergy & Conflict Engine (7 cols) -->
         <div class="md:col-span-7 bg-cardDark rounded-xl p-3.5 gold-border space-y-2.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h3 class="text-xs font-mono uppercase tracking-wider text-gold">🧬 Динамический радар био-синергии</h3>
+              <h3 class="text-xs font-mono uppercase tracking-wider text-gold">🧬 Динамический радар био-синергии и SGLT1</h3>
               <p id="synergyDynamicHeader" class="text-[11px] text-textMuted">Анализ активных связей и дозировок на порцию 20 г</p>
             </div>
             <span id="synergyCountBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-950 text-purple-200 border border-purple-500/30">Связей: 0</span>
           </div>
-          <div id="synergyAlertsContainer" class="space-y-2 max-h-[320px] overflow-y-auto pr-1"></div>
+          <div id="synergyAlertsContainer" class="space-y-2 max-h-[340px] overflow-y-auto pr-1"></div>
         </div>
       </div>
     </section>
 
-    <!-- ================= TAB 2: MELANGER TIMELINE & MOLD BIO-SPLITTER ================= -->
+    <!-- ================= TAB 2: WORKSHOP PROTOCOL (18µm PASTE + SILK SEEDING) & MOLDS ================= -->
     <section id="tab-process" class="tab-panel hidden space-y-3.5">
 
-      <!-- Mold & Dead-Loss Planner with Psilocybin & Epicatechin -->
+      <!-- TOP MODE SWITCHER -->
+      <div class="bg-cardDark rounded-xl p-3.5 gold-border space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-gold/15 text-gold border border-gold/30">Режим цеха (Только Шелк Формы V)</span>
+            <h2 class="font-serif text-lg sm:text-xl font-bold text-textCream mt-1">⏱️ Протокол сборки и Ленивого темперирования Шелком</h2>
+          </div>
+          <button onclick="resetProcessChecks()" class="text-xs font-mono px-2.5 py-1 rounded bg-white/5 text-textMuted border border-white/10 hover:text-white">Сбросить чек-лист</button>
+        </div>
+
+        <!-- Mode Selector Tabs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+          <button id="procModeExpressBtn" onclick="setProcessMode('express18')" class="p-2.5 rounded-xl border border-gold bg-gold/15 text-left transition">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold text-gold">⚡ Экспресс: Из пасты 18 мкм (Блоки 200г)</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gold text-bgDark font-bold">~3.0–3.5 ч</span>
+            </div>
+            <p class="text-[11px] text-textCream/80 mt-1">Жидкий старт (на масле 60°C ИЛИ на 1/3 теплой пасты 45°C) → Ввод остатка пасты 18 мкм → Ввод Шелка (33.5–34.0°C)</p>
+          </button>
+
+          <button id="procModeRawBtn" onclick="setProcessMode('rawbeans')" class="p-2.5 rounded-xl border border-white/10 bg-bgDark text-left transition">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold text-textCream">🪨 Полный цикл: Из ВМС-бобов с нуля</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-textMuted">14–18 часов</span>
+            </div>
+            <p class="text-[11px] text-textMuted mt-1">Помол цельных фиолетовых бобов в велле при 38–42 °C с финишным темперированием Шелком в чаше</p>
+          </button>
+        </div>
+
+        <!-- EXPRESS 18µm + SILK TEMPERING DASHBOARD -->
+        <div id="expressDashboardBox" class="space-y-3 pt-2 border-t border-white/10">
+
+          <!-- 3 Engineering Cards: 1) 200g Blocks, 2) Smart Liquid Start, 3) Silk Form V -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+
+            <!-- Card 1: 18µm Paste Blocks -->
+            <div class="bg-bgDark p-3 rounded-xl border border-purple-500/30 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono uppercase text-purple-300">1. Паста 18 мкм со склада</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-purple-950 text-purple-200">Блоки по 200 г</span>
+              </div>
+              <div id="expPasteBlocksReadout" class="font-mono text-base font-bold text-white">700.0 г = 3.5 блока</div>
+              <p class="text-[11px] text-textMuted leading-snug">
+                Прогреть блоки в сувиде/дегидраторе при <strong class="text-textCream">42–45 °C</strong> до текучести сливок. Холодные блоки в чашу не бросать!
+              </p>
+              <button onclick="snapCacaoTo200gBlocks()" class="w-full mt-1 py-1 rounded bg-purple-900/40 hover:bg-purple-900/60 border border-purple-400/40 text-[11px] font-mono text-purple-200 transition">
+                🎯 Округлить какао до целых блоков (×200г)
+              </button>
+            </div>
+
+            <!-- Card 2: Smart Liquid Start (Adapts to 0% oil vs 10-15% oil) -->
+            <div class="bg-bgDark p-3 rounded-xl border border-amber-500/30 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono uppercase text-amber-300">2. Среда скольжения (Шаг 1)</span>
+                <span id="expStartModeBadge" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-200">Без разбавления маслом</span>
+              </div>
+              <div id="expStarterOilReadout" class="font-mono text-sm font-bold text-gold">Старт на 1/3 пасты (235 г)</div>
+              <p id="expStarterOilDesc" class="text-[11px] text-textMuted leading-snug"></p>
+              <div id="expStarterActionBtns" class="flex gap-1 pt-0.5">
+                <button onclick="applyButterWedge(3.0)" class="flex-1 py-1 rounded bg-purple-900/40 hover:bg-purple-900/60 border border-purple-400/40 text-[10px] font-mono text-purple-200">
+                  +3% клин масла
+                </button>
+                <button onclick="applyButterWedge(10.0)" class="flex-1 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-[10px] font-mono text-amber-200">
+                  +10% масло старта
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: Cacao Butter Silk (Form V Beta) Calculator -->
+            <div class="bg-bgDark p-3 rounded-xl border border-emerald-500/40 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono uppercase text-emerald-300">3. Затравка: «Шелк» (Форма V)</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-200">Строго 33.5–34.0 °C</span>
+              </div>
+
+              <!-- Silk Dosage % Selector (0.5% / 0.8% / 1.0%) -->
+              <div class="grid grid-cols-3 gap-1 pt-0.5 font-mono text-[10px]">
+                <button onclick="setSilkPct(0.5)" class="silk-pct-btn py-1 rounded bg-cardDark border border-white/10 text-textMuted" data-sp="0.5">0.5% (Мин)</button>
+                <button onclick="setSilkPct(0.8)" class="silk-pct-btn py-1 rounded bg-emerald-900/60 border border-emerald-400 text-white font-bold" data-sp="0.8">0.8% ★</button>
+                <button onclick="setSilkPct(1.0)" class="silk-pct-btn py-1 rounded bg-cardDark border border-white/10 text-textMuted" data-sp="1.0">1.0% (Макс)</button>
+              </div>
+
+              <div id="expSeedGramsReadout" class="font-mono text-base font-bold text-emerald-300 pt-0.5">Ввести: 8.0 г Шелка</div>
+              <p class="text-[11px] text-textMuted leading-snug">
+                Вносить при <strong class="text-white">33.5–34.0 °C</strong> перед набегающим бегуном (пружины ослаблены, обдув ВКЛ, 5–7 мин до 31.5 °C).
+              </p>
+            </div>
+          </div>
+
+          <!-- Collapsible Guide: Cacao Butter Silk Sous-Vide Protocol -->
+          <details class="bg-bgDark rounded-xl border border-gold/25 overflow-hidden">
+            <summary class="px-3.5 py-2.5 cursor-pointer text-xs font-semibold text-gold flex items-center justify-between select-none">
+              <span>🧪 Регламент заготовки «Шелка» какао-масла (Cacao Butter Silk) в сувиде из нашего чистого масла ВМС</span>
+              <span class="font-mono text-[10px] text-textMuted">Развернуть ▾</span>
+            </summary>
+            <div class="p-3.5 border-t border-white/10 text-xs space-y-2">
+              <div class="p-3 rounded-lg bg-cardDark border border-emerald-500/30 space-y-1.5">
+                <div class="font-bold text-emerald-300 font-mono">Протокол Cacao Butter Silk (100% кристаллы Формы V β):</div>
+                <ol class="list-decimal list-inside space-y-1 text-[11px] text-textCream/90 leading-relaxed">
+                  <li><strong>Стирание памяти (50 °C):</strong> Растопите чистое какао-масло в стеклянной банке или вакуум-пакете в сувиде при <strong>50 °C в течение 30 минут</strong>.</li>
+                  <li><strong>Кристаллизационное плато (33.5–33.6 °C):</strong> Перенастройте термостат сувида строго на <strong>33.5–33.6 °C</strong>.</li>
+                  <li><strong>Созревание (18–24 часа):</strong> Выдерживайте емкость с маслом в сувиде 18–24 часа, <strong>каждые 3–4 часа энергично встряхивая</strong> или разминая пакет.</li>
+                  <li><strong>Хранение и работа:</strong> Получается блестящая суспензия плотности майонеза («Шелк»). Хранится при <strong>18–22 °C месяцами</strong>. Расход: всего <strong>0.5–1.0%</strong> от массы чаши при 33.5–34.0 °C.</li>
+                </ol>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- STEP-BY-STEP INTERACTIVE TIMELINE -->
+        <div id="melangerPhasesContainer" class="space-y-2.5 pt-1"></div>
+      </div>
+
+      <!-- MOLD & BIOACTIVE DOSE PLANNER -->
       <div class="bg-cardDark rounded-xl p-3.5 gold-border space-y-3.5">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 class="font-serif text-lg font-bold text-textCream">📦 Калькулятор отливки форм и биоактивных доз</h2>
-            <p class="text-xs text-textMuted">Точный выход форм с расчетом <strong>(-)-Эпикатехина (DP1)</strong> и <strong>Псилоцибина / Грибов</strong> в каждом изделии</p>
+            <p class="text-xs text-textMuted">Точный выход форм (включая массу Шелка Формы V) с расчетом <strong>(-)-Эпикатехина (DP1)</strong> и <strong>Псилоцибина</strong></p>
           </div>
           <div class="font-mono text-xs bg-bgDark px-2.5 py-1.5 rounded-lg border border-gold/30 text-gold">
             Чистый выход (Net): <strong id="netYieldGrams">965.0</strong> г
@@ -283,7 +403,7 @@
           <div>
             <span class="text-[10px] font-mono uppercase text-textMuted block">Всего (-)-Эпикатехина в чистом выходе:</span>
             <span id="netTotalEpicatechin" class="font-mono text-sm font-bold text-purple-300">12,495 мг (12.50 г)</span>
-            <span class="text-[10px] text-textMuted block">База ВМС: ~18.5 мг/г какао (DP1)</span>
+            <span class="text-[10px] text-textMuted block">База ВМС: ~18.5 мг/г сухих бобов (DP1)</span>
           </div>
           <div>
             <span class="text-[10px] font-mono uppercase text-textMuted block">Всего Теобромина / Флаванолов:</span>
@@ -314,27 +434,15 @@
         <!-- Mold Grid Cards -->
         <div id="moldCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
       </div>
-
-      <!-- Melanger Phase Checklist -->
-      <div class="bg-cardDark rounded-xl p-3.5 gold-border space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 class="font-serif text-lg font-bold text-textCream">⏱️ Пофазный протокол загрузки меланжера</h2>
-            <p class="text-xs text-textMuted">Температурный коридор чаши: <strong class="text-gold font-mono">38–42 °C</strong> (сохранение эпикатехина DP1 и PEA)</p>
-          </div>
-          <button onclick="resetProcessChecks()" class="text-xs font-mono px-2.5 py-1 rounded bg-white/5 text-textMuted border border-white/10">Сбросить чек-лист</button>
-        </div>
-        <div id="melangerPhasesContainer" class="space-y-2.5"></div>
-      </div>
     </section>
 
     <!-- ================= TAB 3: 70/30 PASTE TO MILK CONVERTER ================= -->
     <section id="tab-milk" class="tab-panel hidden space-y-3.5">
       <div class="bg-cardDark rounded-xl p-3.5 gold-border space-y-3.5">
         <div>
-          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30">Цеховой Реконфигуратор</span>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30">Цеховой Реконфигуратор (Синхронизировано с Источником 1)</span>
           <h2 class="font-serif text-xl font-bold text-textCream mt-1">🥛 Конвертер готовой Базовой пасты 70/30 в Молочный шоколад</h2>
-          <p class="text-xs text-textMuted">Учитывает 70% фиолетовых бобов и 30% панелы внутри вашей готовой пасты и вычисляет точную досыпку.</p>
+          <p class="text-xs text-textMuted">Точная математика трансформации: учитывает 70% фиолетовых бобов и 30% панелы внутри вашей пасты 70/30 и вычисляет досыпку + количество Шелка Формы V для темперирования при 29.5–30.5 °C.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -342,12 +450,12 @@
             <label class="block text-xs text-textMuted mb-1">Берем готовой пасты 70/30 со склада (г):</label>
             <div class="flex items-center gap-2">
               <button onclick="nudgePaste7030(-100)" class="step-btn w-9 h-9 rounded-lg bg-cardDark border border-white/15 font-mono font-bold">−</button>
-              <input id="paste7030Input" type="number" value="500" step="50" oninput="calcMilkConverter()" class="w-full h-9 rounded-lg bg-cardDark border border-gold/50 text-center font-mono text-base font-bold text-gold">
+              <input id="paste7030Input" type="number" value="1000" step="100" oninput="calcMilkConverter()" class="w-full h-9 rounded-lg bg-cardDark border border-gold/50 text-center font-mono text-base font-bold text-gold">
               <button onclick="nudgePaste7030(100)" class="step-btn w-9 h-9 rounded-lg bg-cardDark border border-white/15 font-mono font-bold">+</button>
             </div>
             <div class="mt-2 text-[11px] font-mono text-textMuted flex justify-between">
-              <span>В ней чистого какао: <strong id="convPureCacao" class="text-purple-300">350.0 г</strong></span>
-              <span>В ней панелы: <strong id="convExistingPanela" class="text-amber-300">150.0 г</strong></span>
+              <span>В ней чистого какао: <strong id="convPureCacao" class="text-purple-300">700.0 г</strong></span>
+              <span>В ней панелы: <strong id="convExistingPanela" class="text-amber-300">300.0 г</strong></span>
             </div>
           </div>
 
@@ -356,11 +464,11 @@
             <div class="grid grid-cols-2 gap-2">
               <button id="milkProf40Btn" onclick="setMilkProfile('sweet40')" class="p-2 rounded-lg border border-gold bg-gold/15 text-left transition">
                 <div class="font-mono text-xs font-bold text-gold">Sweet Milk 40%</div>
-                <div class="text-[10px] text-textMuted">28% боб + 12% масло</div>
+                <div class="text-[10px] text-textMuted">28% боб + 12% масло (38% пан.)</div>
               </button>
               <button id="milkProf50Btn" onclick="setMilkProfile('dark50')" class="p-2 rounded-lg border border-white/10 bg-cardDark text-left transition">
                 <div class="font-mono text-xs font-bold text-textCream">Dark Milk 50%</div>
-                <div class="text-[10px] text-textMuted">38% боб + 12% масло</div>
+                <div class="text-[10px] text-textMuted">35% боб + 15% масло (31% пан.)</div>
               </button>
             </div>
           </div>
@@ -370,7 +478,7 @@
       </div>
     </section>
 
-    <!-- ================= TAB 4: UNIT ECONOMICS (MANUAL CACAO BASIS & KG MARGIN) ================= -->
+    <!-- ================= TAB 4: UNIT ECONOMICS ================= -->
     <section id="tab-econ" class="tab-panel hidden space-y-3.5">
       <div class="bg-cardDark rounded-xl p-3.5 gold-border space-y-3.5">
         <div>
@@ -378,7 +486,6 @@
           <p class="text-xs text-textMuted">Полный расчет себестоимости 1 кг (сырье + упаковка), реализационной цены 1 кг от стоимости плитки и валовой маржи</p>
         </div>
 
-        <!-- Cacao Cost Basis Controls with Manual Input -->
         <div class="bg-bgDark p-3 rounded-xl border border-white/10 space-y-2.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <span class="text-xs font-semibold text-gold uppercase font-mono">1. Базис стоимости фиолетового какао ВМС ($/кг):</span>
@@ -436,7 +543,7 @@
           </div>
         </div>
 
-        <!-- 1 KG MASTER ECONOMICS CARDS (Requested: Total Cost/kg, Realization Price/kg from bar, Margin) -->
+        <!-- 1 KG MASTER ECONOMICS CARDS -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           <div class="bg-bgDark p-3 rounded-xl border border-white/15">
             <div class="text-[10px] font-mono uppercase text-textMuted">Общая себестоимость 1 кг</div>
@@ -466,7 +573,6 @@
           </div>
         </div>
 
-        <!-- Detailed Cost Breakdown Table -->
         <div class="overflow-x-auto pt-1">
           <table class="w-full text-left text-xs font-mono">
             <thead class="text-[10px] uppercase text-textMuted border-b border-white/10">
@@ -491,8 +597,8 @@
     <div class="bg-cardDark w-full max-w-2xl rounded-t-2xl sm:rounded-2xl gold-border-bright max-h-[90vh] flex flex-col overflow-hidden">
       <div class="p-3.5 bg-cardAlt border-b border-white/10 flex items-center justify-between">
         <div>
-          <h3 class="font-serif text-lg font-bold text-gold">📄 Паспорт партии & Спецификация</h3>
-          <p class="text-[11px] text-textMuted">Готовый лист для цеха, WhatsApp или B2B-клиента</p>
+          <h3 class="font-serif text-lg font-bold text-gold">📄 Паспорт партии & Протокол сборки</h3>
+          <p class="text-[11px] text-textMuted">Готовый тех-лист для цеха, WhatsApp или B2B-клиента</p>
         </div>
         <button onclick="closeModal('passportModal')" class="w-8 h-8 rounded-lg bg-white/5 text-textMuted hover:text-white font-mono">✕</button>
       </div>
@@ -545,12 +651,6 @@
   </nav>
 
   <script>
-    // ================= BIOCHEMICAL CONSTANTS (FROM ZAMORA LAB DATA) =================
-    // Dry VMD Purple Cacao (~90% preservation):
-    // (-)-Epicatechin (DP1): 15-22 mg/g -> average 18.5 mg/g
-    // Total Flavanols (DP1-DP7): 50-75 mg/g -> average 60.0 mg/g
-    // Theobromine: 22-35 mg/g -> average 28.0 mg/g
-    // Psilocybe dry powder: ~0.85% active tryptamines (psilocybin + psilocin) = 8.5 mg per 1.0 g mushroom powder (4.25 mg per 0.50 g)
     const BIO_CONST = {
       epicatechinMgPerGramCacao: 18.5,
       flavanolsMgPerGramCacao: 60.0,
@@ -558,27 +658,40 @@
       psilocybinMgPerGramMush: 8.5
     };
 
-    // ================= WAREHOUSE INGREDIENTS =================
     const WAREHOUSE = {
       cacao_paste: {
         id: 'cacao_paste',
-        name: 'Фиолетовое какао (ВМС бобы / паста 100%)',
-        nameEs: 'Pasta de Cacao Púrpura VMD (100% Nacional)',
-        nameEn: 'Unfermented Purple Cacao Paste (VMD Nacional)',
-        role: 'Эталон 100% | ~18.5 мг/г эпикатехина (DP1), ~28 мг/г теобромина, PEA',
-        phase: 1,
-        fatRatio: 0.52,
+        name: 'Фиолетовая паста 18 мкм / ВМС бобы (100%)',
+        nameEs: 'Pasta de Cacao Púrpura 18µm VMD (100%)',
+        nameEn: 'Unfermented Purple Cacao Paste 18µm (100%)',
+        role: 'Эталон 100% | ~18.5 мг/г эпикатехина (DP1), ~28 мг/г теобромина, ~45% нативного масла',
+        phase: 2,
+        rawPhase: 1,
+        fatRatio: 0.45,
         priceKg: 10.00,
         defaultBaker: 100.0,
         isBase: true
       },
+      cacao_butter: {
+        id: 'cacao_butter',
+        name: 'Какао-масло ВМС (холодный отжим)',
+        nameEs: 'Manteca de Cacao VMD (Prensado en frío)',
+        nameEn: 'Cold-Pressed VMD Cacao Butter',
+        role: 'Жидкий старт (55–60°C), Spice Blooming специй и повышение текучести (0 мг DP1)',
+        phase: 1,
+        rawPhase: 1,
+        fatRatio: 1.0,
+        priceKg: 22.00,
+        defaultBaker: 15.85
+      },
       panela: {
         id: 'panela',
-        name: 'Панела амазонская (микропудра)',
-        nameEs: 'Panela Orgánica en Polvo',
-        nameEn: 'Organic Amazonian Panela Powder',
-        role: 'Глюкозный насос SGLT1, гликемический буфер мозга',
-        phase: 2,
+        name: 'Панела амазонская (сито 100–150 мкм)',
+        nameEs: 'Panela Orgánica Tamizada (100–150µm)',
+        nameEn: 'Sifted Amazonian Panela Powder',
+        role: 'Глюкозный насос SGLT1, минеральный пул (Mg, Fe, K) против фитатов',
+        phase: 1,
+        rawPhase: 2,
         fatRatio: 0,
         priceKg: 1.67,
         defaultBaker: 33.93
@@ -588,8 +701,9 @@
         name: 'Грибы (Psilocybe, микропудра)',
         nameEs: 'Hongos Funcionales (Micro-polvo)',
         nameEn: 'Functional Mushroom Micro-Powder',
-        role: '5-HT2A агонизм (~8.5 мг триптаминов/г), запуск BDNF и нейрогенеза',
-        phase: 4,
+        role: '5-HT2A агонизм (~8.5 мг триптаминов/г), запуск BDNF и синаптогенеза',
+        phase: 3,
+        rawPhase: 4,
         fatRatio: 0,
         priceKg: 180.00,
         defaultBaker: 3.571
@@ -600,7 +714,8 @@
         nameEs: 'Cúrcuma (Micro-polvo de raíz)',
         nameEn: 'Turmeric Root Micro-Powder (Curcumin)',
         role: 'Индуктор BDNF/CREB, двойной блок UGT1A9/10, нейропротекция',
-        phase: 3,
+        phase: 1,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 14.00,
         defaultBaker: 0.857
@@ -610,8 +725,9 @@
         name: 'Гибискус (Flor de Jamaica, микропудра)',
         nameEs: 'Flor de Jamaica (Micro-polvo)',
         nameEn: 'Hibiscus Sabdariffa Micro-Powder',
-        role: 'Кислоты (pH 3.8–4.2): In-Matrix Lemon-Tek, дехелатация Mg/Fe, защита цвета',
-        phase: 2,
+        role: 'Кислоты (pH 3.8–4.2): In-Matrix Lemon-Tek, дехелатация фитатов, защита цвета',
+        phase: 1,
+        rawPhase: 2,
         fatRatio: 0,
         priceKg: 18.00,
         defaultBaker: 1.714
@@ -622,7 +738,8 @@
         nameEs: 'Jengibre (Micro-polvo)',
         nameEn: 'Ginger Root Micro-Powder',
         role: 'Гингеролы: блокада 5-HT3 рецепторов ЖКТ (купирование тошноты)',
-        phase: 3,
+        phase: 1,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 16.00,
         defaultBaker: 1.429
@@ -633,7 +750,8 @@
         nameEs: 'Sal Marina Cristalina',
         nameEn: 'Fine Sea Salt',
         role: 'Ионы Na+ для запуска котранспортера SGLT1, подавление горечи',
-        phase: 2,
+        phase: 1,
+        rawPhase: 2,
         fatRatio: 0,
         priceKg: 11.11,
         defaultBaker: 0.643
@@ -643,8 +761,9 @@
         name: 'Черный перец (микропудра)',
         nameEs: 'Pimienta Negra (Piperina)',
         nameEn: 'Black Pepper Micro-Powder (Piperine)',
-        role: 'Пиперин (~5%): ингибитор UGT, P-gp и МАО (буст куркумина +2000% и триптаминов ×2)',
-        phase: 3,
+        role: 'Пиперин (~5%): блок UGT, P-gp и МАО (Spice Blooming при 60°C)',
+        phase: 1,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 15.00,
         defaultBaker: 0.500
@@ -654,8 +773,9 @@
         name: 'Мака желатинизированная (Harina Maca)',
         nameEs: 'Harina de Maca Gelatinizada',
         nameEn: 'Gelatinized Maca Root Powder',
-        role: 'Макамиды: ингибитор FAAH (защита анандамида какао)',
-        phase: 3,
+        role: 'Макамиды: ингибитор FAAH (защита анандамида какао, строго ≤1.3%)',
+        phase: 2,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 22.67,
         defaultBaker: 1.364
@@ -665,8 +785,9 @@
         name: 'Гуаюса (Ilex guayusa, микропудра)',
         nameEs: 'Guayusa Amazónica (Micro-polvo)',
         nameEn: 'Amazonian Guayusa Leaf Powder',
-        role: 'L-теанин: альфа-ритмы (8–12 Гц), снятие сосудистых спазмов и тревоги',
-        phase: 3,
+        role: 'L-теанин: альфа-ритмы (8–12 Гц), снятие сосудистых спазмов',
+        phase: 2,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 15.00,
         defaultBaker: 0.909
@@ -676,8 +797,9 @@
         name: 'Ваниль натуральная (микропудра)',
         nameEs: 'Vainilla Natural en Polvo',
         nameEn: 'Pure Vanilla Bean Powder',
-        role: 'Ретроназальное округление фенольной терпкости эпикатехина',
-        phase: 3,
+        role: 'Ретроназальное округление фенольной терпкости (Spice Blooming)',
+        phase: 1,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 400.00,
         defaultBaker: 0.727
@@ -687,19 +809,21 @@
         name: 'Ишпинго (Ocotea quixos, корица)',
         nameEs: 'Ishpingo (Flor de Canela Amazónica)',
         nameEn: 'Ishpingo Amazonian Cinnamon',
-        role: 'Транс-циннамилацетат: синергия с пиперином, инсулиновый контроль',
-        phase: 3,
+        role: 'Транс-циннамилацетат: Spice Blooming в жировой фазе при 60°C',
+        phase: 1,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 30.00,
         defaultBaker: 0.545
       },
       aji: {
         id: 'aji',
-        name: 'Ахи чили (Ají, микропудра)',
+        name: 'Ахи чили (Ají, микропудра без семян)',
         nameEs: 'Ají Amazónico en Polvo',
         nameEn: 'Amazonian Chili (Capsaicin)',
-        role: 'Капсаицин: открытие TRPV1, расширение капилляров брыжейки',
-        phase: 3,
+        role: 'Капсаицин: открытие TRPV1, эндорфиновый отклик (Spice Blooming)',
+        phase: 1,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 33.00,
         defaultBaker: 0.182
@@ -710,7 +834,8 @@
         nameEs: 'Bálsamo de Copaiba (Gotas)',
         nameEn: 'Copaiba Oleoresin (Beta-Caryophyllene)',
         role: 'Бета-кариофиллен (55%): прямой селективный агонист рецепторов CB2',
-        phase: 3,
+        phase: 2,
+        rawPhase: 3,
         fatRatio: 0.95,
         priceKg: 50.00,
         defaultBaker: 0.018
@@ -721,52 +846,44 @@
         nameEs: 'Moringa Oleifera',
         nameEn: 'Moringa Leaf Micro-Powder',
         role: 'Кверцетин: ингибитор COMT (пролонгация дофамина и PEA до 4–6 ч)',
-        phase: 3,
+        phase: 2,
+        rawPhase: 3,
         fatRatio: 0,
         priceKg: 20.00,
         defaultBaker: 0.35
-      },
-      cacao_butter: {
-        id: 'cacao_butter',
-        name: 'Какао-масло ВМС (холодный отжим)',
-        nameEs: 'Manteca de Cacao VMD',
-        nameEn: 'Cold-Pressed VMD Cacao Butter',
-        role: 'Свободная липидная фаза, снижение вязкости, мицеллярный транспорт',
-        phase: 1,
-        fatRatio: 1.0,
-        priceKg: 22.00,
-        defaultBaker: 5.00
       },
       milk_powder: {
         id: 'milk_powder',
         name: 'Сухое цельное молоко (26%)',
         nameEs: 'Leche Entera en Polvo',
         nameEn: 'Whole Milk Powder',
-        role: 'Сливочная эмульсия, связывание танинов (снижает скорость абсорбции DP1)',
-        phase: 2,
+        role: 'Сливочная эмульсия, связывание танинов белками молока',
+        phase: 1,
+        rawPhase: 2,
         fatRatio: 0.26,
         priceKg: 8.50,
-        defaultBaker: 89.29
+        defaultBaker: 75.00
       },
       naranjilla: {
         id: 'naranjilla',
         name: 'Наранхилла (пудра целого плода)',
         nameEs: 'Naranjilla Liofilizada en Polvo',
         nameEn: 'Naranjilla Fruit Powder',
-        role: 'Ударная фруктовая кислотность + витамин C (пробитие липидного барьера)',
-        phase: 2,
+        role: 'Ударная фруктовая кислотность (10% в глазури) для пробития жирового барьера',
+        phase: 1,
+        rawPhase: 2,
         fatRatio: 0,
         priceKg: 25.00,
-        defaultBaker: 62.50
+        defaultBaker: 66.67
       }
     };
 
-    // ================= PRESET RECIPES =================
+    // ================= VERIFIED RECIPES (100% MATCH WITH NOTEBOOK SOURCES) =================
     const RECIPES = [
       {
         id: 'neuro_turmeric',
         shortTitle: '🍄 Грибы + Куркума (70%)',
-        fullTitle: 'Нейрогенез & Синаптогенез: Грибы + Куркума (70.0%)',
+        fullTitle: 'Нейрогенез & Синаптогенез: Грибы + Куркума (70.0% какао, 0% св. масла)',
         defaultMode: 'total',
         defaultAnchorMass: 1000,
         defaultPortion: 20,
@@ -783,8 +900,8 @@
       },
       {
         id: 'inca_master',
-        shortTitle: '⚡ Плитка INCA (70.9%)',
-        fullTitle: 'Плитка «INCA» — Мастер-рецептура (11 компонентов)',
+        shortTitle: '⚡ INCA 70.9% (Оригинал)',
+        fullTitle: 'Плитка «INCA» — Мастер-формула (70.9% паста, 0% св. масла, 11 комп.)',
         defaultMode: 'cacao',
         defaultAnchorMass: 1100,
         defaultPortion: 20,
@@ -803,9 +920,48 @@
         ]
       },
       {
+        id: 'inca_silk_10',
+        shortTitle: '✨ INCA Silk (+10% масла)',
+        fullTitle: 'Плитка «INCA Silk» под пасту 18 мкм (63.8% паста + 10.1% масло = 73.9% Total Cacao)',
+        defaultMode: 'cacao',
+        defaultAnchorMass: 1000, // 5 blocks of 200g
+        defaultPortion: 20,
+        items: [
+          { id: 'cacao_paste', baker: 100.00 },
+          { id: 'cacao_butter', baker: 15.8500 }, // 10.1% of final bar for liquid start
+          { id: 'panela', baker: 34.5455 },
+          { id: 'hibiscus', baker: 1.6364 },
+          { id: 'maca', baker: 1.3636 },
+          { id: 'guayusa', baker: 0.9091 },
+          { id: 'vanilla', baker: 0.7273 },
+          { id: 'salt', baker: 0.6364 },
+          { id: 'ishpingo', baker: 0.5455 },
+          { id: 'black_pepper', baker: 0.4545 },
+          { id: 'aji', baker: 0.1818 },
+          { id: 'copaiba', baker: 0.0182 }
+        ]
+      },
+      {
+        id: 'ginger_hibiscus',
+        shortTitle: '🌺 Имбирь & Хамайка (70.5%)',
+        fullTitle: 'Матрица Имбирь, Гибискус & Грибы (70.5% паста — Источник 4)',
+        defaultMode: 'total',
+        defaultAnchorMass: 1000,
+        defaultPortion: 20,
+        items: [
+          { id: 'cacao_paste', baker: 100.00 },
+          { id: 'panela', baker: 34.0426 },
+          { id: 'psilocybe', baker: 3.5461 },
+          { id: 'hibiscus', baker: 1.7021 },
+          { id: 'ginger', baker: 1.4184 },
+          { id: 'salt', baker: 0.6383 },
+          { id: 'black_pepper', baker: 0.4965 }
+        ]
+      },
+      {
         id: 'base_70_30',
         shortTitle: '🍫 База 70/30',
-        fullTitle: 'Базовая паста 70/30 (Фиолетовое какао + Панела)',
+        fullTitle: 'Базовая паста 70/30 (70% фиолетовое какао + 30% панела — Источник 1)',
         defaultMode: 'cacao',
         defaultAnchorMass: 1000,
         defaultPortion: 20,
@@ -817,75 +973,60 @@
       {
         id: 'salted_70',
         shortTitle: '🧂 Паста 70% Salted',
-        fullTitle: 'Базовая паста 70% с морской солью и ванилью',
+        fullTitle: 'Базовая паста 70% с морской солью и ванилью (Источник 1)',
         defaultMode: 'cacao',
         defaultAnchorMass: 1000,
         defaultPortion: 20,
         items: [
           { id: 'cacao_paste', baker: 100.00 },
           { id: 'panela', baker: 41.4286 },
-          { id: 'salt', baker: 0.6400 },
-          { id: 'vanilla', baker: 0.7900 }
-        ]
-      },
-      {
-        id: 'ginger_hibiscus',
-        shortTitle: '🌺 Имбирь & Хамайка (72.5%)',
-        fullTitle: 'Функциональная основа Имбирь & Гибискус (72.5%)',
-        defaultMode: 'cacao',
-        defaultAnchorMass: 1100,
-        defaultPortion: 20,
-        items: [
-          { id: 'cacao_paste', baker: 100.00 },
-          { id: 'panela', baker: 32.00 },
-          { id: 'hibiscus', baker: 1.64 },
-          { id: 'ginger', baker: 1.10 },
-          { id: 'salt', baker: 0.60 },
-          { id: 'black_pepper', baker: 0.40 }
+          { id: 'salt', baker: 0.6429 },
+          { id: 'vanilla', baker: 0.7857 }
         ]
       },
       {
         id: 'sweet_milk_40',
         shortTitle: '🥛 Молочный 40%',
-        fullTitle: 'Сладкий молочный шоколад (40% какао: 28% боб + 12% масло)',
-        defaultMode: 'total',
+        fullTitle: 'Сладкий молочный шоколад 40% (28% бобы + 12% масло + 38% панела + 21% молоко — Источник 16)',
+        defaultMode: 'cacao',
         defaultAnchorMass: 1000,
         defaultPortion: 20,
         items: [
           { id: 'cacao_paste', baker: 100.00 },
-          { id: 'panela', baker: 121.429 },
-          { id: 'milk_powder', baker: 89.286 },
-          { id: 'cacao_butter', baker: 42.857 },
-          { id: 'vanilla', baker: 1.786 },
-          { id: 'salt', baker: 1.071 }
+          { id: 'panela', baker: 135.7143 },
+          { id: 'milk_powder', baker: 75.0000 },
+          { id: 'cacao_butter', baker: 42.8571 },
+          { id: 'vanilla', baker: 2.1429 },
+          { id: 'salt', baker: 1.4286 }
         ]
       },
       {
         id: 'snack_naranjilla',
         shortTitle: '🍊 Глазурь Наранхилла',
-        fullTitle: 'Дражировочная матрица «Snack Crujiente» с наранхиллой',
+        fullTitle: 'Глазурь «Snack Crujiente Funcional» (400г масло, 300г панела, 150г паста, 100г наранхилла — Источник 2)',
         defaultMode: 'total',
         defaultAnchorMass: 1000,
         defaultPortion: 20,
         items: [
           { id: 'cacao_paste', baker: 100.00 },
-          { id: 'cacao_butter', baker: 281.25 },
-          { id: 'panela', baker: 150.00 },
-          { id: 'naranjilla', baker: 62.50 },
-          { id: 'black_pepper', baker: 15.625 },
-          { id: 'ishpingo', baker: 12.50 },
-          { id: 'salt', baker: 3.125 }
+          { id: 'cacao_butter', baker: 266.6667 },
+          { id: 'panela', baker: 200.0000 },
+          { id: 'naranjilla', baker: 66.6667 },
+          { id: 'black_pepper', baker: 16.6667 },
+          { id: 'ishpingo', baker: 13.3333 },
+          { id: 'salt', baker: 3.3333 }
         ]
       }
     ];
 
-    // ================= STATE =================
     let state = {
       activeRecipeId: 'neuro_turmeric',
       calcMode: 'total',
       anchorMass: 1000,
       portionSize: 20,
       items: [],
+      processMode: 'express18', // 'express18' or 'rawbeans'
+      silkPct: 0.8,             // 0.5%, 0.8%, or 1.0% Cacao Butter Silk ONLY
       econBasis: 'A',
       cacaoManualPrice: 10.00,
       econBarWeight: 100,
@@ -896,7 +1037,7 @@
 
     function loadSavedCustomRecipes() {
       try {
-        const saved = localStorage.getItem('zamora_custom_recipes_v4');
+        const saved = localStorage.getItem('zamora_custom_recipes_v6');
         if (saved) {
           JSON.parse(saved).forEach(r => {
             if (!RECIPES.find(ex => ex.id === r.id)) RECIPES.push(r);
@@ -949,7 +1090,7 @@
     function resetToZero() {
       state.activeRecipeId = 'zero';
       state.calcMode = 'cacao';
-      state.anchorMass = 1000;
+      state.anchorMass = 600;
       state.items = [{ id: 'cacao_paste', baker: 100.0 }];
       document.getElementById('activeRecipeSubtitle').textContent = 'Конструктор с нуля (Чистый лист — 100% Какао)';
       syncTopControlsUI();
@@ -972,7 +1113,7 @@
       RECIPES.push(newRec);
       state.activeRecipeId = newRec.id;
       try {
-        localStorage.setItem('zamora_custom_recipes_v4', JSON.stringify(RECIPES.filter(r => r.id.startsWith('custom_'))));
+        localStorage.setItem('zamora_custom_recipes_v6', JSON.stringify(RECIPES.filter(r => r.id.startsWith('custom_'))));
       } catch (e) {}
       renderRecipeSelector();
       document.getElementById('activeRecipeSubtitle').textContent = newRec.fullTitle;
@@ -1025,7 +1166,7 @@
       document.getElementById('modeTotalBtn').className = !isCacao
         ? 'flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-xs transition bg-gold text-bgDark font-semibold'
         : 'flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-xs transition text-textMuted hover:text-white';
-      document.getElementById('anchorInputLabel').textContent = isCacao ? 'База Какао 100% (г):' : 'Целевой выход всей партии (г):';
+      document.getElementById('anchorInputLabel').textContent = isCacao ? 'База Пасты / Бобов 100% (г):' : 'Целевой выход всей партии (г):';
       document.getElementById('anchorMassInput').value = state.anchorMass;
 
       document.querySelectorAll('.portion-btn').forEach(btn => {
@@ -1061,6 +1202,19 @@
       state.anchorMass = mass;
       document.getElementById('anchorMassInput').value = mass;
       recalculateAndRender();
+    }
+
+    function applyPresetCacaoBlocks(blockCount) {
+      state.calcMode = 'cacao';
+      state.anchorMass = blockCount * 200;
+      syncTopControlsUI();
+      recalculateAndRender();
+    }
+
+    function snapCacaoTo200gBlocks() {
+      const currentCacao = getCacaoMass();
+      const blocks = Math.max(1, Math.round(currentCacao / 200));
+      applyPresetCacaoBlocks(blocks);
     }
 
     function setNeuroPotency(gramsPerPortion, balanceSweetener) {
@@ -1181,12 +1335,14 @@
       recalculateAndRender();
     }
 
-    function applyButterWedge() {
+    function applyButterWedge(targetMatrixPct = 3.0) {
+      const otherBakerSum = state.items.reduce((acc, it) => it.id === 'cacao_butter' ? acc : acc + it.baker, 0);
+      const neededBaker = (targetMatrixPct * otherBakerSum) / (100.0 - targetMatrixPct);
       let butter = state.items.find(i => i.id === 'cacao_butter');
       if (butter) {
-        butter.baker = Math.round((butter.baker + 5.5) * 100) / 100;
+        butter.baker = Math.round(neededBaker * 100) / 100;
       } else {
-        state.items.push({ id: 'cacao_butter', baker: 5.5 });
+        state.items.splice(1, 0, { id: 'cacao_butter', baker: Math.round(neededBaker * 100) / 100 });
       }
       recalculateAndRender();
     }
@@ -1199,13 +1355,29 @@
       const cacaoMass = getCacaoMass();
       const totalMass = getTotalMass();
       const cacaoMatrixPct = (100.0 / bakerSum) * 100.0;
+      const freeButterPct = getItemMatrixPct('cacao_butter', bakerSum);
+      const totalCacaoProductsPct = cacaoMatrixPct + freeButterPct;
       const portionCount = totalMass / state.portionSize;
+      const blocks200 = cacaoMass / 200.0;
+      const silkGrams = getSilkGrams(totalMass);
 
       document.getElementById('headerTotalMass').textContent = totalMass.toFixed(1);
-      document.getElementById('headerCacaoPct').textContent = cacaoMatrixPct.toFixed(1) + '%';
+      if (freeButterPct > 0.1) {
+        document.getElementById('headerCacaoLabel').textContent = 'Выход / Паста (Total Cacao)';
+        document.getElementById('headerCacaoPct').textContent = `${cacaoMatrixPct.toFixed(1)}% (${totalCacaoProductsPct.toFixed(1)}%)`;
+        document.getElementById('footerTotalCacaoSpan').textContent = `| Total Cacao: ${totalCacaoProductsPct.toFixed(1)}%`;
+      } else {
+        document.getElementById('headerCacaoLabel').textContent = 'Выход / Доля пасты';
+        document.getElementById('headerCacaoPct').textContent = cacaoMatrixPct.toFixed(1) + '%';
+        document.getElementById('footerTotalCacaoSpan').textContent = '';
+      }
+
       document.getElementById('footerBakerSum').textContent = bakerSum.toFixed(2) + '%';
+      document.getElementById('footerPastePct').textContent = cacaoMatrixPct.toFixed(1) + '%';
       document.getElementById('footerPortionCount').textContent = portionCount.toFixed(1) + ' шт';
       document.getElementById('footerTotalGrams').textContent = totalMass.toFixed(1);
+      document.getElementById('footerSilkGrams').textContent = silkGrams.toFixed(1);
+      document.getElementById('blocksIndicatorTop').textContent = `${blocks200.toFixed(1)} бл. по 200г (${cacaoMass.toFixed(0)}г)`;
 
       const mush = state.items.find(x => x.id === 'psilocybe');
       const potBox = document.getElementById('potencyTargeterBox');
@@ -1228,7 +1400,7 @@
 
       renderCutTestAndRheology(cacaoMass, totalMass, bakerSum);
       renderDynamicSynergyEngine(cacaoMass, totalMass, bakerSum);
-      renderMelangerPhases(cacaoMass, totalMass);
+      renderWorkshopProtocol(cacaoMass, totalMass, bakerSum);
       updateMoldPlanner();
       updateEconomics();
       renderPassportText();
@@ -1248,6 +1420,7 @@
         const batchGrams = (cacaoMass * bakerVal) / 100.0;
         const mgHint = portionGrams < 1.0 ? `${Math.round(portionGrams * 1000)} мг` : `${portionGrams.toFixed(2)} г`;
         const stepSize = bakerVal < 2 ? 0.1 : 1.0;
+        const stepTag = state.processMode === 'express18' ? `Шаг ${w.phase}` : `Фаза ${w.rawPhase}`;
 
         html += `
           <div class="p-3 ${isBase ? 'bg-purple-950/25' : 'hover:bg-white/[0.02]'} transition">
@@ -1256,7 +1429,7 @@
                 <div>
                   <div class="flex items-center gap-1.5">
                     <span class="font-semibold text-sm ${isBase ? 'text-purple-200' : 'text-textCream'}">${w.name}</span>
-                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 text-textMuted">Ф${w.phase}</span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 text-gold">${stepTag}</span>
                   </div>
                   <p class="text-[11px] text-textMuted leading-snug mt-0.5">${w.role}</p>
                 </div>
@@ -1377,31 +1550,33 @@
 
       const fatPct = (totalFatGrams / totalMass) * 100.0;
       const powderPct = (hydroPowdersGrams / totalMass) * 100.0;
+      const freeButterPct = getItemMatrixPct('cacao_butter', bakerSum);
+      const hasMush = state.items.some(i => i.id === 'psilocybe' && i.baker > 0);
 
       document.getElementById('visualBarFatLabel').textContent = fatPct.toFixed(1) + '% жира';
-      document.getElementById('fatPercentReadout').textContent = `${fatPct.toFixed(1)}% жиров | ${powderPct.toFixed(1)}% пудр`;
+      document.getElementById('fatPercentReadout').textContent = `${fatPct.toFixed(1)}% жиров (${freeButterPct.toFixed(1)}% св. масла) | ${powderPct.toFixed(1)}% пудр`;
       document.getElementById('fatBarFill').style.width = Math.min(100, fatPct) + '%';
       document.getElementById('sugarBarFill').style.width = Math.min(100 - fatPct, powderPct) + '%';
 
       const badge = document.getElementById('rheologyStatusBadge');
-      const fixBtn = document.getElementById('rheologyFixBtn');
       const advice = document.getElementById('rheologyAdviceText');
 
-      if (fatPct < 33.5 || powderPct > 36) {
+      if (fatPct < 29.0) {
         badge.className = 'text-[11px] font-mono px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-500/40';
         badge.textContent = '⚠️ Риск Sugar Seizing';
-        fixBtn.classList.remove('hidden');
-        advice.innerHTML = 'Высокая нагрузка сухих пудр на безмасляную базу. Возможен «эффект пластилина». Нажмите <strong>«+4% ВМС-масла»</strong> выше.';
-      } else if (fatPct < 36.5) {
+        advice.innerHTML = 'Общая жирность ниже 29%. Сухие пудры заберут весь жир — введите минимум <strong>+3%–10% какао-масла</strong>.';
+      } else if (hasMush && freeButterPct > 5.0) {
         badge.className = 'text-[11px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/40';
-        badge.textContent = 'Плотная паста (Крафт)';
-        fixBtn.classList.remove('hidden');
-        advice.textContent = 'Масса подходит для ремесленных плиток и монолита. Обязательно просеять панелу через сито 100–150 мкм и держать обдув 39–42 °C.';
+        badge.textContent = '⚠️ Липидный барьер SGLT1';
+        advice.innerHTML = `В грибной матрице ${freeButterPct.toFixed(1)}% свободного масла (общий жир ${fatPct.toFixed(1)}%). Текучесть отличная, но избыток жира замедлит вход SGLT1 с 15 до 45–60 мин (Источник 4).`;
+      } else if (freeButterPct < 1.0) {
+        badge.className = 'text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30';
+        badge.textContent = 'Чистая нативная матрица (0% масла)';
+        advice.innerHTML = `Нативных жиров боба (${fatPct.toFixed(1)}%) достаточно для вращения и темперирования Шелком (0.8%). При работе с блоками 18 мкм стартуйте на <strong>1/3 теплой пасты (45 °C)</strong>.`;
       } else {
         badge.className = 'text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30';
-        badge.textContent = 'Высокая текучесть';
-        fixBtn.classList.add('hidden');
-        advice.textContent = 'Отличная липидная дисперсия: жернова вращаются свободно, глянец и звонкий разлом гарантированы.';
+        badge.textContent = 'Высокая текучесть (Spice Blooming)';
+        advice.textContent = `В рецепте ${freeButterPct.toFixed(1)}% свободного масла: идеальное скольжение бегунов на Шаге 1 и быстрый разгон кристаллов Шелка при 33.5 °C.`;
       }
 
       const turmPct = getItemMatrixPct('turmeric', bakerSum);
@@ -1417,8 +1592,8 @@
       if (milkPct > 10) {
         const grad = 'linear-gradient(135deg, #7C4DFF 0%, #6D4C41 55%, #4E342E 100%)';
         sample.style.background = grad; headerBadge.style.background = grad;
-        titleEl.textContent = 'Лавандово-карамельный молочный срез';
-        descEl.textContent = 'Антоцианы фиолетового какао в молочной эмульсии дают ягодно-сливочный тон.';
+        titleEl.textContent = 'Лавандово-сливочный срез (Lavender Pastel)';
+        descEl.textContent = 'Белое молоко с антоцианами неферментированного боба дает пастельный сиренево-карамельный тон (Источник 16).';
       } else if (turmPct > 0.75 || moringaPct > 0.45) {
         const grad = 'linear-gradient(135deg, #78350F 0%, #451A03 70%, #292524 100%)';
         sample.style.background = grad; headerBadge.style.background = grad;
@@ -1428,16 +1603,16 @@
         const grad = 'linear-gradient(135deg, #831843 0%, #4C1D95 55%, #1E1B4B 100%)';
         sample.style.background = grad; headerBadge.style.background = grad;
         titleEl.textContent = 'Рубиново-фиолетовый срез (Royal Purple)';
-        descEl.textContent = 'Кислоты гибискуса/наранхиллы (${hibPct.toFixed(2)}%) стабилизируют пурпурный катион флавилия.';
+        descEl.textContent = `Кислоты гибискуса/наранхиллы (${hibPct.toFixed(2)}%) фиксируют пурпурный катион флавилия.`;
       } else {
         const grad = 'linear-gradient(135deg, #5B21B6 0%, #2E1065 65%, #0F172A 100%)';
         sample.style.background = grad; headerBadge.style.background = grad;
         titleEl.textContent = 'Глубокий сланцево-фиолетовый срез (Sacha Gold)';
-        descEl.textContent = 'Интактные клеточные антоцианы и эпикатехин неферментированного боба ВМС.';
+        descEl.textContent = 'Интактные клеточные антоцианы и эпикатехин пасты 18 мкм.';
       }
     }
 
-    // ================= DYNAMIC BIO-SYNERGY ENGINE (REAL-TIME QUANTITATIVE) =================
+    // ================= DYNAMIC BIO-SYNERGY ENGINE =================
     function renderDynamicSynergyEngine(cacaoMass, totalMass, bakerSum) {
       const pSize = state.portionSize;
       const getPct = (id) => getItemMatrixPct(id, bakerSum);
@@ -1446,6 +1621,7 @@
       const has = (id) => getPct(id) > 0.001;
 
       const cacaoG = getPortionG('cacao_paste');
+      const freeButterPct = getPct('cacao_butter');
       const epicatechinMg = Math.round(cacaoG * BIO_CONST.epicatechinMgPerGramCacao);
       const flavanolsMg = Math.round(cacaoG * BIO_CONST.flavanolsMgPerGramCacao);
       const theobromineMg = Math.round(cacaoG * BIO_CONST.theobromineMgPerGramCacao);
@@ -1455,7 +1631,7 @@
       const psiloMg = (mushG * BIO_CONST.psilocybinMgPerGramMush);
 
       const pepMg = getPortionMg('black_pepper');
-      const piperineMg = (pepMg * 0.05); // ~5% piperine in black pepper
+      const piperineMg = (pepMg * 0.05);
       const turmMg = getPortionMg('turmeric');
       const hibMg = getPortionMg('hibiscus');
       const narMg = getPortionMg('naranjilla');
@@ -1465,25 +1641,35 @@
       const macaMg = getPortionMg('maca');
       const guayusaMg = getPortionMg('guayusa');
       const moringaMg = getPortionMg('moringa');
-      const ajiMg = getPortionMg('aji');
       const copaibaMg = getPortionMg('copaiba');
       const milkPct = getPct('milk_powder');
 
       document.getElementById('synergyDynamicHeader').textContent =
-        `Динамический профиль на порцию ${pSize} г: ${epicatechinMg} мг эпикатехина (DP1)` +
+        `На порцию ${pSize} г: ${epicatechinMg} мг эпикатехина (DP1)` +
         (mushMg > 0 ? ` • ${mushMg} мг грибов (~${psiloMg.toFixed(1)} мг триптаминов)` : '');
 
       const signals = [];
 
-      // 1. Always show Core Cacao Endothelial Base
+      // 1. Core Cacao + Oil Dilution Audit
       signals.push({
         type: 'core',
         badge: `${epicatechinMg} мг DP1 | ${theobromineMg} мг Теобр.`,
-        title: `Сосудистое ядро Sacha Gold (${getPct('cacao_paste').toFixed(1)}% какао в матрице)`,
-        desc: `В каждой порции ${pSize} г содержится ${cacaoG.toFixed(2)} г ВМС-какао: ~${epicatechinMg} мг мономерного (-)-эпикатехина (синтез эндотелиального NO и раскрытие капилляров мозга) и ~${flavanolsMg} мг общих флаванолов DP1–DP7.`
+        title: `Сосудистое ядро Sacha Gold (${getPct('cacao_paste').toFixed(1)}% чистой пасты)`,
+        desc: `В порции ${pSize} г содержится ${cacaoG.toFixed(2)} г пасты ВМС: ~${epicatechinMg} мг (-)-эпикатехина (синтез эндотелиального NO) и ~${flavanolsMg} мг флаванолов DP1–DP7.` +
+              (freeButterPct > 0.5 ? ` Внимание: ${freeButterPct.toFixed(1)}% матрицы занимает свободное какао-масло (0 мг DP1).` : '')
       });
 
-      // 2. SGLT1 Pump (Panela + Salt)
+      // 2. Crucial Audit from Source 4: Free Cacao Butter in Mushroom Matrix
+      if (has('psilocybe') && freeButterPct > 5.0) {
+        signals.push({
+          type: 'warn',
+          badge: `Св. масло ${freeButterPct.toFixed(1)}% (>5%)`,
+          title: 'Фармакокинетический конфликт (Источник 4): Свободное масло тормозит SGLT1',
+          desc: `Избыток свободного масла создает гидрофобный экран на слизистой ЖКТ, задерживая всасывание водорастворимого псилоцина с 15–20 мин до 50–70 мин и стимулируя выброс CCK (гастростаз). Для грибной матрицы оптимум — 0% масла (или микро-клин ≤3%).`
+        });
+      }
+
+      // 3. SGLT1 Pump
       if (has('panela') && has('salt')) {
         const naMg = Math.round(saltMg * 0.39);
         const isOptimalSalt = getPct('salt') >= 0.35 && getPct('salt') <= 0.80;
@@ -1492,21 +1678,21 @@
           badge: `${panelaG.toFixed(2)}г сахаров + ${naMg}мг Na+`,
           title: isOptimalSalt
             ? 'Турбо-транспорт SGLT1 активирован (Вход 15–20 мин)'
-            : 'Насос SGLT1 работает в неоптимальной стехиометрии',
+            : 'Насос SGLT1: проверьте долю морской соли',
           desc: isOptimalSalt
-            ? `Ионы Na+ (${saltMg} мг морской соли) и глюкоза панелы (${panelaG.toFixed(2)} г) создают осмотический «solvent drag» в тонком кишечнике, ускоряя всасывание эпикатехина и алкалоидов.`
-            : `Соль в матрице составляет ${getPct('salt').toFixed(2)}% (оптимум 0.40–0.65%). Скорректируйте соль для полного включения котранспортера SGLT1 и гашения танинов.`
+            ? `Ионы Na+ (${saltMg} мг соли) и глюкоза панелы (${panelaG.toFixed(2)} г) запускают натрий-глюкозный котранспортер SGLT1 и гасят фитаты собственным минеральным пулом (Источник 8).`
+            : `Соль в матрице составляет ${getPct('salt').toFixed(2)}% (целевой коридор Salted Craft: 0.40–0.65%).`
         });
       } else if (has('panela') && !has('salt')) {
         signals.push({
           type: 'missing',
           badge: 'Нет ионов Na+',
           title: 'Неполная связка SGLT1: есть Панела, но отсутствует Морская соль',
-          desc: `В рецепте ${panelaG.toFixed(2)} г панелы на порцию, но 0 г соли. Добавьте ~0.45% морской соли (чип «+ Морская соль»), чтобы запустить натрий-глюкозный насос SGLT1.`
+          desc: `Добавьте 0.45% морской соли, чтобы включить активный транспорт глюкозы и флаванолов.`
         });
       }
 
-      // 3. Neurogenesis & Tryptamine Matrix (Psilocybe + Synergists)
+      // 4. Neurogenesis Stack
       if (has('psilocybe')) {
         const hasPep = has('black_pepper');
         const hasTurm = has('turmeric');
@@ -1516,132 +1702,92 @@
         signals.push({
           type: 'synergy',
           badge: `${mushMg} мг → экв. ~${equivGrams} г`,
-          title: `Нейропластический стек: ${psiloMg.toFixed(2)} мг триптаминов + ${epicatechinMg} мг эпикатехина`,
-          desc: `Агонизм 5-HT2A запускает экспрессию BDNF, а эпикатехин какао расширяет сосудистое русло мозга, убирая периферический спазм. За счет защиты ферментов (${hasPep ? 'пиперин' : 'без пиперина'}${hasTurm ? ' + куркумин' : ''}) ${mushMg} мг ощущаются как ~${equivGrams} г сухих тел.`
+          title: `Нейропластический резонанс: ${psiloMg.toFixed(2)} мг триптаминов + ${epicatechinMg} мг DP1`,
+          desc: `Псилоцин (5-HT2A) запускает экспрессию BDNF, а эпикатехин какао расширяет капилляры коры мозга. Нулевое перекисное число ВМС-масла (<0.5 мэкв/кг) консервирует псилоцин от синего окисления (Источник 4).`
         });
 
         if (!has('ginger')) {
           signals.push({
             type: 'missing',
-            badge: 'Риск 5-HT3 тошноты',
+            badge: 'Защита 5-HT3',
             title: 'Рекомендуется добавить Имбирь (блокада 5-HT3 рецепторов ЖКТ)',
-            desc: 'В матрице есть грибы, но нет имбиря. Введите 1.0–1.2% микропудры имбиря (200 мг на порцию 20 г) для купирования тошноты на входе.'
-          });
-        }
-        if (!has('hibiscus') && !has('naranjilla')) {
-          signals.push({
-            type: 'missing',
-            badge: 'Нет кислотного гидролиза',
-            title: 'Отсутствует Гибискус (In-Matrix Lemon-Tek)',
-            desc: 'Добавьте ~1.2% Flor de Jamaica (240 мг на 20 г) для локального снижения pH (3.8–4.2) и ускоренного перевода псилоцибина в активный псилоцин.'
+            desc: 'Введите 1.0% микропудры имбиря (200 мг на порцию 20 г) для купирования тошноты.'
           });
         }
       }
 
-      // 4. Curcumin + Piperine + Lipid Tandem
+      // 5. Curcumin + Piperine
       if (has('turmeric')) {
         if (has('black_pepper')) {
-          const ratio = (pepMg / Math.max(1, turmMg)).toFixed(2);
           signals.push({
             type: 'synergy',
             badge: `${turmMg} мг куркумы + ${piperineMg.toFixed(1)} мг пиперина`,
-            title: 'Тандем «Куркумин + Пиперин» в липидных мицеллах (+2000% усвоение)',
-            desc: `${turmMg} мг куркумы с ${pepMg} мг перца (соотношение ${ratio}:1) блокируют UGT1A9/10 и P-gp, усваиваясь как ~${((turmMg * 20) / 1000).toFixed(1)} г обычного экстракта и усиливая синтез BDNF.`
+            title: 'Тандем «Куркумин + Пиперин» (+2000% биодоступность, двойной блок UGT)',
+            desc: `${turmMg} мг куркумы и ${pepMg} мг перца растворяются в нативных триглицеридах какао (~6 г жира в порции) и блокируют ферменты UGT1A9/10.`
           });
         } else {
           signals.push({
             type: 'warn',
             badge: 'Биодоступность ~1%',
-            title: 'Куркума без Черного перца разрушается при первом прохождении печени!',
-            desc: `Вы ввели ${turmMg} мг куркумы на порцию, но в рецепте нет черного перца. Без пиперина 99% куркумина инактивируется ферментами UGT. Включите чип «+ Черный перец».`
+            title: 'Куркума без Черного перца разрушается в печени!',
+            desc: `Включите чип «+ Черный перец» для ингибирования глюкуронизации (UGT).`
           });
         }
       }
 
-      // 5. Piperine UGT / P-gp / MAO Shield (when no turmeric)
-      if (has('black_pepper') && !has('turmeric')) {
-        signals.push({
-          type: 'synergy',
-          badge: `${pepMg} мг перца (~${piperineMg.toFixed(1)} мг пиперина)`,
-          title: 'Метаболический щит UGT / P-gp / МАО-В активирован',
-          desc: `Пиперин тормозит глюкуронизацию эпикатехина и распад фенилэтиламина (PEA), удерживая высокую концентрацию активных молекул в плазме крови.`
-        });
-      }
-
-      // 6. In-Matrix Lemon-Tek & Mineral Dechelation (Hibiscus / Naranjilla)
+      // 6. Hibiscus / Naranjilla
       if (has('hibiscus') || has('naranjilla')) {
-        const acidMg = hibMg + narMg;
         signals.push({
           type: 'synergy',
-          badge: `${acidMg} мг орг. кислот`,
-          title: 'Дехелатация фитатов (Mg2+/Fe2+) и фиксация рубинового цвета',
-          desc: `Органические кислоты (${has('hibiscus') ? 'Flor de Jamaica' : ''}${has('naranjilla') ? ' Наранхилла' : ''}) протонируют фитиновую кислоту неферментированного боба, освобождая магний и железо.`
+          badge: `${hibMg + narMg} мг орг. кислот`,
+          title: 'Протонирование фитатов и In-Matrix Lemon-Tek (Источник 4)',
+          desc: `Кислоты гибискуса/наранхиллы нейтрализуют фитиновую кислоту сырого боба, освобождая магний и железо, и фиксируют рубиновый катион флавилия.`
         });
       }
 
-      // 7. Ginger 5-HT3 Gastroprotection
-      if (has('ginger')) {
+      // 7. Maca Rheology Limit (Source 7)
+      const macaPct = getPct('maca');
+      if (macaPct > 1.35 && freeButterPct < 5.0) {
         signals.push({
-          type: 'synergy',
-          badge: `${gingMg} мг имбиря`,
-          title: 'Гастропротекция: блокада серотониновых 5-HT3 рецепторов',
-          desc: `Гингеролы и шогаолы (${gingMg} мг на порцию) снимают спазмы ЖКТ и полностью убирают тошноту первого часа.`
+          type: 'warn',
+          badge: `Мака ${macaPct.toFixed(2)}% (>1.3%)`,
+          title: 'Риск «Полисахаридной губки» Маки (Источник 7)',
+          desc: `Желатинизированная мака выше 1.0–1.3% (15–20 г на 1.5 кг) в безмасляной массе с веллой впитывает свободные триглицериды и заклинивает бегуны.`
         });
-      }
-
-      // 8. Endocannabinoid & Dopamine Prolongation (Maca / Guayusa / Moringa / Copaiba / Aji)
-      if (has('maca') || has('copaiba')) {
+      } else if (has('maca') || has('copaiba')) {
         signals.push({
           type: 'synergy',
           badge: `${macaMg ? macaMg + 'мг Маки ' : ''}${copaibaMg ? copaibaMg + 'мг Копайбы' : ''}`,
-          title: 'Эндоканнабиноидный контур (Блокада FAAH + Агонизм CB2)',
-          desc: `${has('maca') ? 'Макамиды маки защищают анандамид какао от фермента FAAH. ' : ''}${has('copaiba') ? 'Бета-кариофиллен копайбы напрямую активирует периферические рецепторы CB2 (телесное расслабление).' : ''}`
+          title: 'Эндоканнабиноидный щит (Ингибитор FAAH + Агонист CB2)',
+          desc: `Макамиды (15 г на партию) тормозят распад анандамида какао, а бета-кариофиллен копайбы активирует рецепторы CB2.`
         });
       }
+
       if (has('guayusa') || has('moringa')) {
         signals.push({
           type: 'synergy',
           badge: `${guayusaMg ? guayusaMg + 'мг Гуаюсы ' : ''}${moringaMg ? moringaMg + 'мг Моринги' : ''}`,
-          title: 'Когнитивная пролонгация (L-теанин альфа-волны + блок COMT)',
-          desc: `${has('guayusa') ? 'L-теанин гуаюсы выравнивает пульс от теобромина и генерирует альфа-ритмы (8–12 Гц). ' : ''}${has('moringa') ? 'Кверцетин моринги ингибирует COMT, продлевая дофаминовый фокус до 4–6 ч.' : ''}`
-        });
-      }
-      if (has('aji')) {
-        signals.push({
-          type: 'synergy',
-          badge: `${ajiMg} мг Ахи чили`,
-          title: 'Капсаициновый триггер TRPV1 (Микроциркуляция)',
-          desc: 'Капсаицин мгновенно расширяет капилляры слизистой и брыжейки, ускоряя доставку эпикатехина в системный кровоток.'
+          title: 'Когнитивная пролонгация (L-теанин альфа-ритмы + блок COMT)',
+          desc: `L-теанин снимает тахикардию, а кверцетин моринги продлевает жизнь дофамина и PEA.`
         });
       }
 
-      // 9. Dairy Casein Warning for Flavanols
       if (milkPct > 5) {
         signals.push({
-          type: 'warn',
+          type: 'hint',
           badge: `Молоко ${milkPct.toFixed(1)}%`,
-          title: 'Связывание части эпикатехина казеином молока',
-          desc: 'Белки коровьего молока образуют водородные связи с полифенолами, снижая пиковую скорость всасывания DP1 примерно на 25–30% в обмен на нежный сливочный профиль.'
+          title: 'Молочная матрица (Источник 16): Темперирование на 1.5–2.0 °C ниже',
+          desc: 'Казеин связывает вяжущие танины сырого боба (убирая терпкость), а молочный жир смещает рабочую температуру слива до 29.5–30.5 °C.'
         });
       }
 
-      // 10. Sensory & Pigment Conflict Warnings
       const turmPct = getPct('turmeric');
       if (turmPct > 0.70) {
         signals.push({
           type: 'warn',
           badge: `Куркума ${turmPct.toFixed(2)}% (>0.7%)`,
           title: 'Органолептический конфликт («Синдром карри») и бурый срез',
-          desc: 'Доля куркумы превышает субсенсорный порог 0.7%. Снизьте до 0.5–0.6% (100–120 мг на порцию 20 г), чтобы сохранить фиолетовый тон и ягодные ноты.'
-        });
-      }
-      const morPct = getPct('moringa');
-      if (morPct > 0.40) {
-        signals.push({
-          type: 'warn',
-          badge: `Моринга ${morPct.toFixed(2)}% (>0.4%)`,
-          title: 'Хлорофилловая горечь (травянистый привкус сена)',
-          desc: 'Превышен лимит 0.4% (6 г на 1.5 кг партии). Рекомендуется снизить навеску моринги.'
+          desc: 'Снизьте до 0.5–0.6% (120 мг на порцию 20 г).'
         });
       }
 
@@ -1671,102 +1817,314 @@
       `).join('');
     }
 
-    // ================= TAB 2: MELANGER TIMELINE & MOLD PLANNER WITH PSILOCYBIN & EPICATECHIN =================
-    function renderMelangerPhases(cacaoMass, totalMass) {
-      const phases = [
-        {
-          num: 1,
-          time: '00:00 – 04:00',
-          title: 'Фаза 1: Липидная база и дезинтеграция ядра ВМС',
-          temp: '38–42 °C (Обдув ВКЛ)',
-          note: 'Плавный ввод фиолетовых бобов в велле / пасты. Высвобождение клеточного масла без перегрева.'
-        },
-        {
-          num: 2,
-          time: '04:00 – 12:00',
-          title: 'Фаза 2: Углеводно-кислотное ядро и помпа SGLT1',
-          temp: '39–41 °C',
-          note: 'Ввод просеянной через сито 100–150 мкм панелы, гибискуса (Flor de Jamaica) и морской соли.'
-        },
-        {
-          num: 3,
-          time: '12:00 – 14:30',
-          title: 'Фаза 3: Финишный нейро-пул, корни и ароматика',
-          temp: '38–40 °C',
-          note: 'Ввод куркумы, имбиря, маки, гуаюсы, ванили, ишпинго, черного перца и капель копайбы прямо под каток.'
-        },
-        {
-          num: 4,
-          time: '14:30 (Вне чаши)',
-          title: 'Фаза 4: Бережная гомогенизация термолабильных грибов',
-          temp: '36–38 °C (После выгрузки)',
-          note: 'Ввод микропудры Psilocybe в теплую массу перед разливкой по формам — 0% окисления триптаминов.'
-        }
-      ];
+    // ================= TAB 2: EXPRESS 18µm PASTE + SILK ONLY TEMPERING =================
+    function setProcessMode(mode) {
+      state.processMode = mode;
+      document.getElementById('procModeExpressBtn').className = mode === 'express18'
+        ? 'p-2.5 rounded-xl border border-gold bg-gold/15 text-left transition'
+        : 'p-2.5 rounded-xl border border-white/10 bg-bgDark text-left transition';
+      document.getElementById('procModeRawBtn').className = mode === 'rawbeans'
+        ? 'p-2.5 rounded-xl border border-gold bg-gold/15 text-left transition'
+        : 'p-2.5 rounded-xl border border-white/10 bg-bgDark text-left transition';
 
-      const container = document.getElementById('melangerPhasesContainer');
-      container.innerHTML = phases.map(p => {
-        const phaseItems = state.items.filter(it => (WAREHOUSE[it.id]?.phase || 3) === p.num);
-        if (phaseItems.length === 0) return '';
-        const phaseGrams = phaseItems.reduce((acc, it) => acc + (cacaoMass * it.baker) / 100.0, 0);
-        const checked = !!state.checkedPhases[p.num];
-
-        return `
-          <div onclick="togglePhaseCheck(${p.num})" class="p-3 rounded-xl border transition cursor-pointer ${
-            checked ? 'bg-emerald-950/30 border-emerald-500/40 opacity-80' : 'bg-bgDark border-white/10 hover:border-gold/40'
-          }">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" ${checked ? 'checked' : ''} class="accent-gold w-4 h-4 rounded pointer-events-none">
-                <span class="font-mono text-xs px-2 py-0.5 rounded bg-gold/15 text-gold">${p.time}</span>
-                <span class="font-semibold text-sm text-textCream">${p.title}</span>
-              </div>
-              <div class="font-mono text-xs text-purple-300">${p.temp} | <strong>${phaseGrams.toFixed(1)} г</strong></div>
-            </div>
-            <p class="text-[11px] text-textMuted mt-1.5">${p.note}</p>
-            <div class="mt-2 flex flex-wrap gap-1.5">
-              ${phaseItems.map(it => {
-                const g = (cacaoMass * it.baker) / 100.0;
-                return `<span class="text-xs font-mono px-2 py-0.5 rounded bg-cardDark border border-white/10 text-textCream">
-                  ${WAREHOUSE[it.id].name.split(' (')[0]}: <strong class="text-gold">${g.toFixed(1)} г</strong>
-                </span>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }).join('');
+      const expBox = document.getElementById('expressDashboardBox');
+      if (mode === 'express18') expBox.classList.remove('hidden');
+      else expBox.classList.add('hidden');
+      recalculateAndRender();
     }
 
-    function togglePhaseCheck(num) {
-      state.checkedPhases[num] = !state.checkedPhases[num];
-      renderMelangerPhases(getCacaoMass(), getTotalMass());
+    function setSilkPct(pct) {
+      state.silkPct = pct;
+      document.querySelectorAll('.silk-pct-btn').forEach(btn => {
+        const sp = parseFloat(btn.getAttribute('data-sp'));
+        btn.className = (sp === pct)
+          ? 'silk-pct-btn py-1 rounded bg-emerald-900/60 border border-emerald-400 text-white font-bold'
+          : 'silk-pct-btn py-1 rounded bg-cardDark border border-white/10 text-textMuted';
+      });
+      recalculateAndRender();
+    }
+
+    function getSilkGrams(totalMass = getTotalMass()) {
+      return totalMass * (state.silkPct / 100.0);
+    }
+
+    function renderWorkshopProtocol(cacaoMass, totalMass, bakerSum) {
+      const blocks200 = cacaoMass / 200.0;
+      const fullBlocks = Math.floor(blocks200);
+      const remGrams = cacaoMass - (fullBlocks * 200);
+      document.getElementById('expPasteBlocksReadout').textContent =
+        remGrams < 1
+          ? `${cacaoMass.toFixed(0)} г = ровно ${fullBlocks} бл. по 200г`
+          : `${cacaoMass.toFixed(0)} г = ${fullBlocks} бл. + ${remGrams.toFixed(0)} г`;
+
+      const currentButterG = getItemGrams('cacao_butter', cacaoMass);
+      const currentButterPct = getItemMatrixPct('cacao_butter', bakerSum);
+      const starterPasteThirdG = cacaoMass * 0.35; // 35% of warm 18µm paste for oil-free liquid start
+      const restPasteG = cacaoMass - starterPasteThirdG;
+
+      const startBadge = document.getElementById('expStartModeBadge');
+      const startReadout = document.getElementById('expStarterOilReadout');
+      const startDesc = document.getElementById('expStarterOilDesc');
+
+      if (currentButterPct >= 8.0) {
+        startBadge.textContent = `Масляный старт (${currentButterPct.toFixed(1)}%)`;
+        startBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-200';
+        startReadout.textContent = `В рецепте: ${currentButterG.toFixed(1)} г масла (55–60 °C)`;
+        startDesc.innerHTML = `Классический старт по Источнику 10: залейте <strong>${currentButterG.toFixed(1)} г горячего масла (55–60 °C)</strong> со специями (Spice Blooming 10 мин) и перетрите панелу за 2 ч.`;
+      } else if (currentButterPct > 0.5) {
+        startBadge.textContent = `Клин ${currentButterPct.toFixed(1)}% + 1/3 пасты`;
+        startBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-purple-950 text-purple-200';
+        startReadout.textContent = `${currentButterG.toFixed(1)} г масла (60°C) + ${starterPasteThirdG.toFixed(0)} г пасты`;
+        startDesc.innerHTML = `Сделайте <strong>Spice Blooming специй в ${currentButterG.toFixed(1)} г масла (60 °C)</strong> + влейте <strong>${starterPasteThirdG.toFixed(0)} г теплой пасты 18 мкм (45 °C)</strong> для жидкого старта без потери SGLT1!`;
+      } else {
+        startBadge.textContent = `0% св. масла (Макс. SGLT1)`;
+        startBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-200';
+        startReadout.textContent = `Старт на 35% пасты 18 мкм (${starterPasteThirdG.toFixed(0)} г при 45°C)`;
+        startDesc.innerHTML = `Чтобы не разбавлять эпикатехин чужим маслом, залейте на старте <strong>${starterPasteThirdG.toFixed(0)} г разогретой до 45 °C жидкой пасты 18 мкм</strong> (или нажмите кнопку ниже для ввода 3% или 10% масла).`;
+      }
+
+      const silkGrams = getSilkGrams(totalMass);
+      const minSilk = totalMass * 0.005;
+      const maxSilk = totalMass * 0.010;
+      document.getElementById('expSeedGramsReadout').textContent =
+        `Шелк (${state.silkPct.toFixed(1)}%): ${silkGrams.toFixed(1)} г (коридор ${minSilk.toFixed(1)}–${maxSilk.toFixed(1)} г)`;
+
+      const isMilk = getItemMatrixPct('milk_powder', bakerSum) > 5;
+      const seedTempStr = isMilk ? '32.0–32.5 °C' : '33.5–34.0 °C';
+      const pourTempStr = isMilk ? '29.5–30.5 °C' : '31.5–32.0 °C';
+
+      const container = document.getElementById('melangerPhasesContainer');
+
+      if (state.processMode === 'express18') {
+        const step1SpiceIds = ['black_pepper', 'ishpingo', 'vanilla', 'turmeric', 'ginger', 'aji'];
+        const step1PowderIds = ['panela', 'salt', 'hibiscus', 'naranjilla', 'milk_powder'];
+        const step2AdaptIds = ['maca', 'guayusa', 'moringa', 'copaiba'];
+        const step3Mush = state.items.find(i => i.id === 'psilocybe');
+
+        const bloomSpices = state.items.filter(i => step1SpiceIds.includes(i.id));
+        const sweetPowders = state.items.filter(i => step1PowderIds.includes(i.id));
+        const adaptogens = state.items.filter(i => step2AdaptIds.includes(i.id));
+
+        const expressSteps = [
+          {
+            num: 1,
+            time: 'ШАГ 1 • 1.5 – 2.5 часа',
+            title: currentButterPct >= 8.0
+              ? 'Жидкий старт на какао-масле (Spice Blooming 60°C) + Помол панелы (<20 мкм)'
+              : 'Жидкий старт на 35% теплой пасты 18 мкм (45°C) + Помол панелы и специй (<20 мкм)',
+            temp: currentButterPct > 0 ? 'Масло 60 °C → Чаша 40–42 °C' : 'Паста 45 °C → Чаша 40–42 °C',
+            warning: '⛔ Критическое правило: Засыпать сухую панелу в сухой меланжер категорически нельзя! Сперва создайте жидкую масляную ванну.',
+            bullets: [
+              currentButterPct >= 8.0
+                ? `Разогрейте <strong>${currentButterG.toFixed(1)} г чистого какао-масла до 55–60 °C</strong>.`
+                : (currentButterPct > 0
+                    ? `Разогрейте <strong>${currentButterG.toFixed(1)} г какао-масла до 60 °C</strong> (для Spice Blooming) + распустите <strong>${starterPasteThirdG.toFixed(0)} г пасты 18 мкм при 45 °C</strong>.`
+                    : `Распустите <strong>${starterPasteThirdG.toFixed(0)} г (35% партии) пасты 18 мкм при 45 °C</strong> до состояния жидких сливок и влейте в прогретую до 40 °C чашу.`),
+              bloomSpices.length > 0
+                ? `<strong>Spice Blooming (10 мин):</strong> Введите молотые специи (${bloomSpices.map(s => WAREHOUSE[s.id].name.split(' (')[0] + ' ' + getItemGrams(s.id, cacaoMass).toFixed(1) + 'г').join(', ')}) в горячую жировую фазу для раскрытия эфиров.`
+                : `Запустите вращение со слабым натяжением пружин.`,
+              `Дробно (порциями по 100–150 г с паузой 2–3 мин) введите просеянную через сито <strong>100–150 мкм</strong> пудру панелы, соли и гибискуса.`,
+              `Затяните пружины на максимум и перетирайте <strong>1.5–2.5 часа</strong> до фракции <20 мкм.`
+            ],
+            chips: [
+              ...(currentButterG > 0 ? [{ name: 'Какао-масло (60°C)', g: currentButterG }] : []),
+              ...(currentButterPct < 8.0 ? [{ name: 'Стартовая часть пасты 18 мкм (35%)', g: starterPasteThirdG }] : []),
+              ...bloomSpices.map(i => ({ name: WAREHOUSE[i.id].name.split(' (')[0], g: getItemGrams(i.id, cacaoMass) })),
+              ...sweetPowders.map(i => ({ name: WAREHOUSE[i.id].name.split(' (')[0], g: getItemGrams(i.id, cacaoMass) }))
+            ]
+          },
+          {
+            num: 2,
+            time: 'ШАГ 2 • 40 – 60 минут',
+            title: 'Деликатный ввод основного объема пасты 18 мкм и гомогенизация',
+            temp: 'Паста 42–45 °C → В чаше 40–42 °C',
+            warning: 'Паста уже имеет дисперсность 18 мкм (3 дня в меланжере). Долгий помол ей не нужен — только объединение фаз за 40–60 минут без окисления PEA и DP1.',
+            bullets: [
+              currentButterPct >= 8.0
+                ? `Прогрейте все <strong>${blocks200.toFixed(1)} блока пасты по 200 г (${cacaoMass.toFixed(1)} г)</strong> при <strong>42–45 °C</strong> до текучести и влейте в меланжер.`
+                : `Влейте оставшиеся <strong>65% теплой пасты 18 мкм (${restPasteG.toFixed(1)} г при 42–45 °C)</strong> к перетертой сладкой базе.`,
+              adaptogens.length > 0
+                ? `Введите термолабильные адаптогены (${adaptogens.map(a => WAREHOUSE[a.id].name.split(' (')[0] + ' ' + getItemGrams(a.id, cacaoMass).toFixed(1) + 'г').join(', ')}).`
+                : `Поддерживайте температуру 40–42 °C.`,
+              `Гомогенизируйте <strong>40–60 минут</strong> до формирования единого жирового зеркала.`
+            ],
+            chips: [
+              { name: currentButterPct >= 8.0 ? 'Вся паста 18 мкм' : 'Остаток пасты 18 мкм (65%)', g: currentButterPct >= 8.0 ? cacaoMass : restPasteG },
+              ...adaptogens.map(i => ({ name: WAREHOUSE[i.id].name.split(' (')[0], g: getItemGrams(i.id, cacaoMass) }))
+            ]
+          },
+          {
+            num: 3,
+            time: 'ШАГ 3 • 7 – 10 минут',
+            title: '«Ленивое темперирование» Шелком в чаше меланжера (In-Melanger Seeding)',
+            temp: `Обдув до ${seedTempStr} → Сдвиг 5–7 мин до ${pourTempStr}`,
+            warning: `⚠️ Физический барьер: Точка плавления кристаллов Формы V (β) = 33.8–34.0 °C. Ни в коем случае не вводите Шелк выше 34.0 °C!`,
+            bullets: [
+              `<strong>Снимите нагрузку:</strong> Полностью ослабьте прижимные пружины бегунов (жернова должны свободно катиться под собственным весом без нагрева от трения).`,
+              `<strong>Охлаждение:</strong> Направьте поток комнатного вентилятора прямо на вращающуюся чашу. Контролируйте пирометром.`,
+              step3Mush
+                ? `<strong>Ввод грибной микропудры (на отметке 36–37 °C):</strong> Всыпьте <strong>${getItemGrams('psilocybe', cacaoMass).toFixed(1)} г грибов</strong> — теплая липидная база мгновенно закапсулирует их без перегрева.`
+                : `Дождитесь остывания массы до рабочей точки затравки.`,
+              `<strong>Ввод Шелка (${seedTempStr}):</strong> Внесите <strong>${silkGrams.toFixed(1)} г «Шелка» какао-масла (${state.silkPct.toFixed(1)}%)</strong> тонкой струйкой прямо перед набегающим гранитным бегуном.`,
+              `<strong>Лавинная кристаллизация (5–7 мин):</strong> Продолжайте вращение под вентилятором 5–7 минут. Механический сдвиг разнесет кристаллы Формы V по всему объему, температура опустится до <strong>${pourTempStr}</strong>, появится плотный глянец.`
+            ],
+            chips: [
+              ...(step3Mush ? [{ name: '🍄 Грибы (при 36–37°C)', g: getItemGrams('psilocybe', cacaoMass) }] : []),
+              { name: `✨ Шелк какао-масла (${state.silkPct.toFixed(1)}%)`, g: silkGrams }
+            ]
+          },
+          {
+            num: 4,
+            time: 'ШАГ 4 • 20 – 30 минут',
+            title: 'Прямой слив в формы и стабилизация (Звонкий скол Snap)',
+            temp: `Слив ${pourTempStr} → Холод 15–17 °C`,
+            warning: null,
+            bullets: [
+              `При температуре <strong>${pourTempStr}</strong> сразу слейте массу через дозатор или кондитерский мешок в поликарбонатные формы.`,
+              `Тщательно отстучите формы о стол для удаления пузырьков воздуха.`,
+              `Поместите в камеру с температурой <strong>15–17 °C на 20–30 минут</strong>.`,
+              `Правильно оттемперированная матрица даст усадку <strong>1.5–2.0%</strong>, легко отойдет от форм со звонким щелчком и нулевым поседением.`
+            ],
+            chips: [
+              { name: 'Итого в формах (с Шелком)', g: totalMass + silkGrams }
+            ]
+          }
+        ];
+
+        container.innerHTML = expressSteps.map(s => {
+          const checked = !!state.checkedPhases['exp_' + s.num];
+          return `
+            <div onclick="togglePhaseCheck('exp_${s.num}')" class="p-3.5 rounded-xl border transition cursor-pointer ${
+              checked ? 'bg-emerald-950/30 border-emerald-500/40 opacity-80' : 'bg-bgDark border-white/10 hover:border-gold/40'
+            }">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <input type="checkbox" ${checked ? 'checked' : ''} class="accent-gold w-4 h-4 rounded pointer-events-none">
+                  <span class="font-mono text-xs px-2 py-0.5 rounded bg-gold/15 text-gold font-bold">${s.time}</span>
+                  <span class="font-semibold text-sm text-textCream">${s.title}</span>
+                </div>
+                <span class="font-mono text-xs px-2 py-0.5 rounded bg-purple-950/80 text-purple-200 border border-purple-500/30">${s.temp}</span>
+              </div>
+
+              ${s.warning ? `
+                <div class="mt-2 p-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-[11px] text-amber-200">
+                  ${s.warning}
+                </div>
+              ` : ''}
+
+              <ul class="mt-2 space-y-1 text-xs text-textCream/85 list-disc list-inside leading-relaxed">
+                ${s.bullets.map(b => `<li>${b}</li>`).join('')}
+              </ul>
+
+              <div class="mt-2.5 flex flex-wrap gap-1.5 pt-2 border-t border-white/5">
+                ${s.chips.map(c => `
+                  <span class="text-xs font-mono px-2 py-0.5 rounded bg-cardDark border border-white/10 text-textCream">
+                    ${c.name}: <strong class="text-gold">${c.g.toFixed(1)} г</strong>
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } else {
+        // RAW BEANS 14-18h PROTOCOL
+        const rawPhases = [
+          {
+            num: 1,
+            time: '00:00 – 03:00',
+            title: 'Фаза 1: Выдавливание нативного жира из ВМС-бобов',
+            temp: '38–42 °C (Обдув ВКЛ, крышка приоткрыта)',
+            note: 'Плавный ввод колотых фиолетовых бобов в велле при ослабленных пружинах.'
+          },
+          {
+            num: 2,
+            time: '03:00 – 14:00',
+            title: 'Фаза 2: Дробный ввод просеянной панелы, гибискуса и соли',
+            temp: '39–41 °C',
+            note: 'Ввод порциями по 50–70 г каждые 10–15 мин. Натяжение пружин максимальное (<20 мкм).'
+          },
+          {
+            num: 3,
+            time: '14:00 – 17:00',
+            title: 'Фаза 3: Финишный пул адаптогенов и пряностей (2.5–3 ч)',
+            temp: '38–40 °C',
+            note: 'Ввод маки, гуаюсы, куркумы, имбиря, ванили, ишпинго, перца и копайбы.'
+          },
+          {
+            num: 4,
+            time: 'Финал (33.5–34.0 °C)',
+            title: 'Фаза 4: Ввод грибов (36–37 °C) и Ленивое темперирование Шелком в чаше',
+            temp: `${seedTempStr} → ${pourTempStr}`,
+            note: `Ослабить пружины, остудить чашу вентилятором до ${seedTempStr}, ввести ${silkGrams.toFixed(1)} г Шелка (${state.silkPct.toFixed(1)}%) и через 5–7 мин слить по формам.`
+          }
+        ];
+
+        container.innerHTML = rawPhases.map(p => {
+          const phaseItems = state.items.filter(it => (WAREHOUSE[it.id]?.rawPhase || 3) === p.num);
+          if (phaseItems.length === 0 && p.num !== 4) return '';
+          const phaseGrams = phaseItems.reduce((acc, it) => acc + (cacaoMass * it.baker) / 100.0, 0);
+          const checked = !!state.checkedPhases['raw_' + p.num];
+
+          return `
+            <div onclick="togglePhaseCheck('raw_${p.num}')" class="p-3 rounded-xl border transition cursor-pointer ${
+              checked ? 'bg-emerald-950/30 border-emerald-500/40 opacity-80' : 'bg-bgDark border-white/10 hover:border-gold/40'
+            }">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <input type="checkbox" ${checked ? 'checked' : ''} class="accent-gold w-4 h-4 rounded pointer-events-none">
+                  <span class="font-mono text-xs px-2 py-0.5 rounded bg-gold/15 text-gold">${p.time}</span>
+                  <span class="font-semibold text-sm text-textCream">${p.title}</span>
+                </div>
+                <div class="font-mono text-xs text-purple-300">${p.temp} | <strong>${phaseGrams.toFixed(1)} г</strong></div>
+              </div>
+              <p class="text-[11px] text-textMuted mt-1.5">${p.note}</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                ${phaseItems.map(it => {
+                  const g = (cacaoMass * it.baker) / 100.0;
+                  return `<span class="text-xs font-mono px-2 py-0.5 rounded bg-cardDark border border-white/10 text-textCream">
+                    ${WAREHOUSE[it.id].name.split(' (')[0]}: <strong class="text-gold">${g.toFixed(1)} г</strong>
+                  </span>`;
+                }).join('')}
+                ${p.num === 4 ? `<span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-200">✨ Шелк Формы V (${state.silkPct.toFixed(1)}%): <strong>${silkGrams.toFixed(1)} г</strong></span>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function togglePhaseCheck(key) {
+      state.checkedPhases[key] = !state.checkedPhases[key];
+      renderWorkshopProtocol(getCacaoMass(), getTotalMass(), getBakerSum());
     }
 
     function resetProcessChecks() {
       state.checkedPhases = {};
-      renderMelangerPhases(getCacaoMass(), getTotalMass());
+      renderWorkshopProtocol(getCacaoMass(), getTotalMass(), getBakerSum());
     }
 
     function updateMoldPlanner() {
       const bakerSum = getBakerSum();
-      const totalMass = getTotalMass();
+      const baseTotalMass = getTotalMass();
+      const silkGrams = getSilkGrams(baseTotalMass);
+      const totalWithSilk = baseTotalMass + silkGrams;
+
       const lossPct = parseFloat(document.getElementById('deadLossSlider').value) || 0;
-      const lossGrams = totalMass * (lossPct / 100.0);
-      const netMass = Math.max(0, totalMass - lossGrams);
+      const lossGrams = totalWithSilk * (lossPct / 100.0);
+      const netMass = Math.max(0, totalWithSilk - lossGrams);
 
       document.getElementById('lossPctLabel').textContent = lossPct.toFixed(1);
       document.getElementById('lossGramsLabel').textContent = lossGrams.toFixed(1);
-      document.getElementById('netYieldGrams').textContent = netMass.toFixed(1);
+      document.getElementById('netYieldGrams').textContent = `${netMass.toFixed(1)} (вкл. ${silkGrams.toFixed(1)}г Шелка)`;
 
-      // Fractions in matrix
-      const cacaoShare = 1.0 / (bakerSum / 100.0); // e.g., 0.70
+      const cacaoShare = 1.0 / (bakerSum / 100.0);
       const mushFound = state.items.find(i => i.id === 'psilocybe');
-      const mushShare = mushFound ? (mushFound.baker / bakerSum) : 0; // e.g., 0.025
+      const mushShare = mushFound ? (mushFound.baker / bakerSum) : 0;
       const hasPep = state.items.some(i => i.id === 'black_pepper' && i.baker > 0);
       const hasTurm = state.items.some(i => i.id === 'turmeric' && i.baker > 0);
       const bioFactor = (hasPep ? 1.7 : 1.0) * (hasTurm ? 1.2 : 1.0);
 
-      // Total net bioactives
       const netCacaoGrams = netMass * cacaoShare;
       const netEpicatechinMg = Math.round(netCacaoGrams * BIO_CONST.epicatechinMgPerGramCacao);
       const netFlavanolsG = (netCacaoGrams * BIO_CONST.flavanolsMgPerGramCacao) / 1000.0;
@@ -1804,7 +2162,6 @@
         const fullUnits = Math.floor(netMass / m.weight);
         const remainder = netMass - (fullUnits * m.weight);
 
-        // Per 1 unit of this mold:
         const unitCacaoG = m.weight * cacaoShare;
         const unitEpicatechinMg = Math.round(unitCacaoG * BIO_CONST.epicatechinMgPerGramCacao);
         const unitFlavanolsMg = Math.round(unitCacaoG * BIO_CONST.flavanolsMgPerGramCacao);
@@ -1828,7 +2185,6 @@
               </div>
             </div>
 
-            <!-- Bioactive Content per 1 Mold Unit -->
             <div class="space-y-1.5 text-[11px] font-mono">
               <div class="p-1.5 rounded bg-purple-950/35 border border-purple-500/30 flex justify-between items-center">
                 <span class="text-purple-200">💎 (-)-Эпикатехин (DP1):</span>
@@ -1861,7 +2217,7 @@
       }).join('');
     }
 
-    // ================= TAB 3: 70/30 PASTE TO MILK CONVERTER =================
+    // ================= TAB 3: 70/30 PASTE TO MILK CONVERTER (EXACT SOURCE 1 MATCH) =================
     function nudgePaste7030(delta) {
       const inp = document.getElementById('paste7030Input');
       inp.value = Math.max(100, (parseFloat(inp.value) || 0) + delta);
@@ -1887,52 +2243,59 @@
       document.getElementById('convPureCacao').textContent = pureCacao.toFixed(1) + ' г';
       document.getElementById('convExistingPanela').textContent = existingPanela.toFixed(1) + ' г';
 
+      // Exact match with Source 1:
+      // Variant A (Sweet 40%): 28% beans (40% paste), 12% butter, 21% milk, 38% total panela (26% added), 0.6% vanilla, 0.4% salt -> 2500g per 1000g paste
+      // Variant B (Dark Milk 50%): 35% beans (50% paste), 15% butter, 18% milk, 31% total panela (16% added), 0.6% vanilla, 0.4% salt -> 2000g per 1000g paste
       const is40 = state.milkProfile === 'sweet40';
-      const cacaoShare = is40 ? 0.28 : 0.38;
+      const cacaoShare = is40 ? 0.28 : 0.35;
       const totalBatch = pureCacao / cacaoShare;
 
-      const targetPanelaTotal = totalBatch * (is40 ? 0.34 : 0.27);
+      const targetPanelaTotal = totalBatch * (is40 ? 0.38 : 0.31);
       const addPanela = Math.max(0, targetPanelaTotal - existingPanela);
-      const addMilk = totalBatch * (is40 ? 0.25 : 0.22);
-      const addButter = totalBatch * 0.12;
-      const addVanilla = totalBatch * 0.005;
-      const addSalt = totalBatch * 0.003;
+      const addMilk = totalBatch * (is40 ? 0.21 : 0.18);
+      const addButter = totalBatch * (is40 ? 0.12 : 0.15);
+      const addVanilla = totalBatch * 0.006;
+      const addSalt = totalBatch * 0.004;
+      const silkNeeded = totalBatch * (state.silkPct / 100.0);
 
       document.getElementById('milkConverterOutput').innerHTML = `
-        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-          <span class="text-xs font-semibold text-gold">Итоговый выход молочного шоколада:</span>
-          <span class="font-mono text-base font-bold text-gold">${totalBatch.toFixed(1)} г</span>
+        <div class="flex flex-wrap items-center justify-between border-b border-white/10 pb-2 gap-2">
+          <span class="text-xs font-semibold text-gold">Итоговый выход молочного шоколада (Источник 1):</span>
+          <span class="font-mono text-base font-bold text-gold">${totalBatch.toFixed(1)} г (+ Шелк ${silkNeeded.toFixed(1)} г)</span>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono pt-1">
           <div class="p-2 rounded bg-cardDark flex justify-between">
-            <span class="text-textMuted">1. Готовая паста 70/30:</span>
+            <span class="text-textMuted">1. Базовая паста 70/30 (${is40 ? '40%' : '50%'}):</span>
             <strong class="text-purple-300">${pasteMass.toFixed(1)} г</strong>
           </div>
           <div class="p-2 rounded bg-cardDark flex justify-between">
-            <span class="text-textMuted">2. Досыпать Панелы:</span>
-            <strong class="text-amber-300">+${addPanela.toFixed(1)} г</strong>
-          </div>
-          <div class="p-2 rounded bg-cardDark flex justify-between">
-            <span class="text-textMuted">3. Сухое молоко (26%):</span>
-            <strong class="text-textCream">+${addMilk.toFixed(1)} г</strong>
-          </div>
-          <div class="p-2 rounded bg-cardDark flex justify-between">
-            <span class="text-textMuted">4. Какао-масло ВМС:</span>
+            <span class="text-textMuted">2. Какао-масло ВМС (${is40 ? '12%' : '15%'}, старт 60°C):</span>
             <strong class="text-gold">+${addButter.toFixed(1)} г</strong>
           </div>
           <div class="p-2 rounded bg-cardDark flex justify-between">
-            <span class="text-textMuted">5. Ваниль натуральная:</span>
+            <span class="text-textMuted">3. Досыпать Панелы (${is40 ? '26%' : '16%'}):</span>
+            <strong class="text-amber-300">+${addPanela.toFixed(1)} г</strong>
+          </div>
+          <div class="p-2 rounded bg-cardDark flex justify-between">
+            <span class="text-textMuted">4. Сухое цельное молоко (${is40 ? '21%' : '18%'}):</span>
+            <strong class="text-textCream">+${addMilk.toFixed(1)} г</strong>
+          </div>
+          <div class="p-2 rounded bg-cardDark flex justify-between">
+            <span class="text-textMuted">5. Ваниль натуральная (0.6%):</span>
             <strong class="text-textCream">+${addVanilla.toFixed(1)} г</strong>
           </div>
           <div class="p-2 rounded bg-cardDark flex justify-between">
-            <span class="text-textMuted">6. Морская соль:</span>
+            <span class="text-textMuted">6. Морская соль (0.4%):</span>
             <strong class="text-textCream">+${addSalt.toFixed(1)} г</strong>
           </div>
+        </div>
+        <div class="p-2 rounded bg-emerald-950/30 border border-emerald-500/30 text-[11px] text-emerald-200 font-mono">
+          ✨ Ленивое темперирование молочной матрицы: остудить чашу до <strong>32.0–32.5 °C</strong>, ввести <strong>${silkNeeded.toFixed(1)} г Шелка (${state.silkPct.toFixed(1)}%)</strong> и слить в формы при <strong>29.5–30.5 °C</strong>.
         </div>
       `;
     }
 
-    // ================= TAB 4: UNIT ECONOMICS (MANUAL BASIS, TOTAL COST/KG, PRICE/KG, MARGIN) =================
+    // ================= TAB 4: UNIT ECONOMICS =================
     function setEconBasis(code, presetPrice) {
       state.econBasis = code;
       if (typeof presetPrice === 'number') {
@@ -2027,23 +2390,17 @@
       const packCostPerBar = Math.max(0, parseFloat(document.getElementById('packCostPerBarInput').value) || 0);
       const packCostPerKg = packCostPerBar * barsPerKg;
 
-      // 1. Total Cost per 1 kg (Raw + Packaging)
       const totalCostPerKg = rawCostPerKg + packCostPerKg;
-
-      // 2. Realization Price per 1 kg (from Bar Price)
       const barRetailPrice = Math.max(0.1, parseFloat(document.getElementById('barRetailPriceInput').value) || 12.0);
       const revenuePerKg = barRetailPrice * barsPerKg;
 
-      // 3. Margin & Profit per 1 kg
       const profitPerKg = revenuePerKg - totalCostPerKg;
       const grossMarginPct = revenuePerKg > 0 ? (profitPerKg / revenuePerKg) * 100.0 : 0;
       const markupPct = totalCostPerKg > 0 ? (profitPerKg / totalCostPerKg) * 100.0 : 0;
 
-      // Single Bar Metrics
       const singleBarTotalCost = totalCostPerKg * (barWeightG / 1000.0);
       const singleBarProfit = barRetailPrice - singleBarTotalCost;
 
-      // Batch Totals
       const batchTotalCost = totalCostPerKg * totalKg;
       const batchTotalRevenue = revenuePerKg * totalKg;
       const batchTotalProfit = profitPerKg * totalKg;
@@ -2076,7 +2433,7 @@
       `).join('');
     }
 
-    // ================= PASSPORT & SPEC GENERATOR =================
+    // ================= PASSPORT & SPEC GENERATOR (SILK ONLY) =================
     function setSpecLang(lang) {
       state.specLang = lang;
       document.querySelectorAll('.spec-lang-btn').forEach(btn => {
@@ -2092,7 +2449,9 @@
       const bakerSum = getBakerSum();
       const cacaoMass = getCacaoMass();
       const totalMass = getTotalMass();
+      const silkGrams = getSilkGrams(totalMass);
       const cacaoPct = (100.0 / bakerSum) * 100.0;
+      const freeButterPct = getItemMatrixPct('cacao_butter', bakerSum);
       const recTitle = document.getElementById('activeRecipeSubtitle').textContent;
       const dateStr = new Date().toISOString().slice(0, 10);
 
@@ -2110,27 +2469,29 @@
         text += `=== ПАСПОРТ ПАРТИИ | CACAO ZAMORA R&D ===\n`;
         text += `Дата: ${dateStr} | Локация: Самора, Эквадор (ВМС-комплекс)\n`;
         text += `Рецептура: ${recTitle}\n`;
-        text += `Доля какао: ${cacaoPct.toFixed(1)}% | Выход партии: ${totalMass.toFixed(1)} г (${(totalMass / pSize).toFixed(1)} порций по ${pSize} г)\n`;
+        text += `Режим сборки: ${state.processMode === 'express18' ? 'Экспресс из пасты 18 мкм (блоки по 200 г) + Темперирование Шелком в чаше' : 'Полный цикл из ВМС-бобов + Шелк'}\n`;
+        text += `Доля пасты: ${cacaoPct.toFixed(1)}%${freeButterPct > 0 ? ` (Total Cacao: ${(cacaoPct + freeButterPct).toFixed(1)}%)` : ''} | Выход: ${totalMass.toFixed(1)} г + Шелк Формы V (${state.silkPct.toFixed(1)}%): ${silkGrams.toFixed(1)} г\n`;
         text += `Биохимия 1 порции (${pSize} г): (-)-Эпикатехин (DP1) ~${epiPerPortionMg} мг` + (mushPerPortionG > 0 ? ` | Грибы: ${(mushPerPortionG * 1000).toFixed(0)} мг (~${psiloPerPortionMg} мг псилоцибина)` : '') + `\n\n`;
 
         if (hideSecrets) {
           text += `СОСТАВ (Clean Label по убыванию массы):\n`;
           text += sorted.map(i => WAREHOUSE[i.id].name).join(', ') + '.\n';
         } else {
-          text += `РАСКЛАДКА ПО ПЕКАРСКОМУ ПРИНЦИПУ (Какао = 100.00%):\n`;
+          text += `РАСКЛАДКА ПО ПЕКАРСКОМУ ПРИНЦИПУ (Паста/Бобы = 100.00%):\n`;
           sorted.forEach(i => {
             const w = WAREHOUSE[i.id];
             const mPct = (i.baker / bakerSum) * 100.0;
             const pGrams = (mPct / 100.0) * pSize;
             const bGrams = (cacaoMass * i.baker) / 100.0;
-            text += `• [Ф${w.phase}] ${w.name}: ${bGrams.toFixed(1)} г | Пекарский: ${i.baker.toFixed(2)}% | Матрица: ${mPct.toFixed(2)}% | На ${pSize}г: ${pGrams.toFixed(2)} г\n`;
+            text += `• [Шаг ${w.phase}] ${w.name}: ${bGrams.toFixed(1)} г | Пекарский: ${i.baker.toFixed(2)}% | Матрица: ${mPct.toFixed(2)}% | На ${pSize}г: ${pGrams.toFixed(2)} г\n`;
           });
+          text += `• [Шаг 3: 33.5–34.0°C] Затравка: «Шелк» какао-масла (Cacao Butter Silk ${state.silkPct.toFixed(1)}%): +${silkGrams.toFixed(1)} г\n`;
         }
       } else if (state.specLang === 'es') {
         text += `=== HOJA DE LOTE & ESPECIFICACIÓN | CACAO ZAMORA ===\n`;
         text += `Fecha: ${dateStr} | Planta: Zamora, Ecuador (Tecnología VMD)\n`;
         text += `Fórmula: ${recTitle}\n`;
-        text += `Cacao Púrpura: ${cacaoPct.toFixed(1)}% | Lote Total: ${totalMass.toFixed(1)} g\n`;
+        text += `Pasta de Cacao: ${cacaoPct.toFixed(1)}% | Lote: ${totalMass.toFixed(1)} g + Seda de Cacao Forma V (${state.silkPct.toFixed(1)}%): ${silkGrams.toFixed(1)} g\n`;
         text += `Bioactivos por porción (${pSize} g): (-)-Epicatequina ~${epiPerPortionMg} mg` + (mushPerPortionG > 0 ? ` | Hongos: ${(mushPerPortionG * 1000).toFixed(0)} mg (~${psiloPerPortionMg} mg psilocibina)` : '') + `\n\n`;
 
         if (hideSecrets) {
@@ -2141,16 +2502,16 @@
           sorted.forEach(i => {
             const w = WAREHOUSE[i.id];
             const mPct = (i.baker / bakerSum) * 100.0;
-            const pGrams = (mPct / 100.0) * pSize;
             const bGrams = (cacaoMass * i.baker) / 100.0;
-            text += `• [Fase ${w.phase}] ${w.nameEs}: ${bGrams.toFixed(1)} g | Panadero: ${i.baker.toFixed(2)}% | Matriz: ${mPct.toFixed(2)}% | Por ${pSize}g: ${pGrams.toFixed(2)} g\n`;
+            text += `• [Paso ${w.phase}] ${w.nameEs}: ${bGrams.toFixed(1)} g | Panadero: ${i.baker.toFixed(2)}% | Matriz: ${mPct.toFixed(2)}%\n`;
           });
+          text += `• [Paso 3: 33.5–34.0°C] Seda de Manteca de Cacao (Forma V ${state.silkPct.toFixed(1)}%): +${silkGrams.toFixed(1)} g\n`;
         }
       } else {
         text += `=== B2B TECHNICAL SPECIFICATION | CACAO ZAMORA ===\n`;
         text += `Date: ${dateStr} | Origin: Zamora Chinchipe, Ecuador\n`;
         text += `Product Matrix: ${recTitle}\n`;
-        text += `Total Cacao Content: ${cacaoPct.toFixed(1)}% | Batch Size: ${totalMass.toFixed(1)} g\n`;
+        text += `Cacao Paste Share: ${cacaoPct.toFixed(1)}% | Batch Size: ${totalMass.toFixed(1)} g (+${silkGrams.toFixed(1)} g Cacao Butter Silk ${state.silkPct.toFixed(1)}%)\n`;
         text += `Bioactives per serving (${pSize} g): (-)-Epicatechin (DP1) ~${epiPerPortionMg} mg` + (mushPerPortionG > 0 ? ` | Functional Mushroom: ${(mushPerPortionG * 1000).toFixed(0)} mg (~${psiloPerPortionMg} mg tryptamines)` : '') + `\n\n`;
 
         if (hideSecrets) {
@@ -2161,10 +2522,10 @@
           sorted.forEach(i => {
             const w = WAREHOUSE[i.id];
             const mPct = (i.baker / bakerSum) * 100.0;
-            const pGrams = (mPct / 100.0) * pSize;
             const bGrams = (cacaoMass * i.baker) / 100.0;
-            text += `• [Phase ${w.phase}] ${w.nameEn}: ${bGrams.toFixed(1)} g | Baker's: ${i.baker.toFixed(2)}% | Share: ${mPct.toFixed(2)}% | Per ${pSize}g: ${pGrams.toFixed(2)} g\n`;
+            text += `• [Step ${w.phase}] ${w.nameEn}: ${bGrams.toFixed(1)} g | Baker's: ${i.baker.toFixed(2)}% | Share: ${mPct.toFixed(2)}%\n`;
           });
+          text += `• [Step 3: 33.5–34.0°C] Cacao Butter Silk (Form V Beta ${state.silkPct.toFixed(1)}%): +${silkGrams.toFixed(1)} g\n`;
         }
       }
 
