@@ -107,18 +107,10 @@ export const SynergyView: React.FC<SynergyViewProps> = ({ recipe, formulation, l
           <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto font-mono text-xs">
             <div className="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/50 border border-purple-200 dark:border-purple-800">
               <span className="text-purple-600 dark:text-purple-300">
-                {isRu ? 'База какао:' : isEs ? 'Cacao base:' : 'Cacao Base:'}{' '}
+                {isRu ? 'Какао в плитке:' : isEs ? 'Cacao en barra:' : 'Cacao in Bar:'}{' '}
               </span>
               <strong className="text-purple-700 dark:text-purple-200">
-                {formulation.pureCacaoBasePercentage}%
-              </strong>
-            </div>
-            <div className="px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800">
-              <span className="text-indigo-600 dark:text-indigo-300">
-                {isRu ? 'В плитке:' : isEs ? 'En barra:' : 'In Bar:'}{' '}
-              </span>
-              <strong className="text-indigo-700 dark:text-indigo-200">
-                {formulation.totalCacaoPercentage}%
+                {formulation.totalCacaoPercentage.toFixed(1)}%
               </strong>
             </div>
             <div className="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
@@ -153,9 +145,9 @@ export const SynergyView: React.FC<SynergyViewProps> = ({ recipe, formulation, l
           </div>
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="text-purple-300">{isRu ? 'База / Плитка:' : isEs ? 'Base / Barra:' : 'Base / Bar:'}</span>
-            <span className="px-2 py-0.5 rounded-md bg-purple-900 text-purple-200 font-bold">
-              {formulation.pureCacaoBasePercentage}% / {formulation.totalCacaoPercentage}%
+            <span className="text-purple-300">{isRu ? 'Какао в плитке:' : isEs ? 'Cacao en barra:' : 'Cacao in Bar:'}</span>
+            <span className="px-2.5 py-0.5 rounded-md bg-purple-900 text-purple-200 font-bold">
+              {formulation.totalCacaoPercentage.toFixed(1)}%
             </span>
           </div>
         </div>
@@ -983,13 +975,15 @@ export const SynergyView: React.FC<SynergyViewProps> = ({ recipe, formulation, l
             <div className="space-y-2 text-slate-600 dark:text-slate-300 leading-relaxed">
               <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 font-mono text-[11px] space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">{isRu ? 'Чистая база какао (без специй):' : isEs ? 'Base de cacao pura (sin especias):' : 'Pure Cacao Base (excl. spices):'}</span>
-                  <span className="font-bold text-teal-600 dark:text-teal-400">{formulation.pureCacaoBasePercentage}%</span>
+                  <span className="text-slate-500">{isRu ? 'Какао в плитке (сухой остаток + масло):' : isEs ? 'Cacao total en barra:' : 'Total Cacao in Bar:'}</span>
+                  <span className="font-bold text-teal-700 dark:text-teal-300">{formulation.totalCacaoPercentage.toFixed(1)}%</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">{isRu ? 'Итоговое какао в плитке:' : isEs ? 'Cacao final en barra:' : 'Final Bar Cacao Content:'}</span>
-                  <span className="font-bold text-teal-700 dark:text-teal-300">{formulation.totalCacaoPercentage}%</span>
-                </div>
+                {formulation.freeButterPercentage > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{isRu ? 'Свободное масло какао:' : isEs ? 'Manteca de cacao añadida:' : 'Added Cacao Butter:'}</span>
+                    <span className="font-bold text-teal-600 dark:text-teal-400">{formulation.freeButterPercentage.toFixed(1)}%</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-slate-500">(-)-{isRu ? 'Эпикатехин DP1 био-доза:' : isEs ? 'Epicatequina DP1 dosis bioactiva:' : 'Epicatechin DP1 bio-dose:'}</span>
                   <span className="font-bold text-teal-600 dark:text-teal-400">{m.epicatechinEffectiveBioDoseMg} {unitMg} / 20 {unitG}</span>

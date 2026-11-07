@@ -249,19 +249,17 @@ export const CalculatorView: React.FC<CalculatorViewProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm">
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-            {language === 'ru' ? 'База какао (Base)' : language === 'es' ? 'Base Pura de Cacao' : 'Pure Cacao Base'}
+            {language === 'ru' ? 'Какао в плитке' : language === 'es' ? 'Cacao en Barra' : 'Cacao in Finished Bar'}
           </span>
           <div className="mt-1 flex items-baseline gap-1">
             <span className="text-2xl md:text-3xl font-mono font-bold text-purple-600 dark:text-purple-400 tabular-nums">
-              {formulation.pureCacaoBasePercentage.toFixed(1)}%
+              {formulation.totalCacaoPercentage.toFixed(1)}%
             </span>
           </div>
           <span className="text-[11px] text-slate-400 font-mono">
-            {language === 'ru'
-              ? `В готовой плитке: ${formulation.totalCacaoPercentage.toFixed(1)}%`
-              : language === 'es'
-              ? `En barra final: ${formulation.totalCacaoPercentage.toFixed(1)}%`
-              : `In finished bar: ${formulation.totalCacaoPercentage.toFixed(1)}%`}
+            {formulation.freeButterPercentage > 0
+              ? `${language === 'ru' ? 'Паста' : 'Paste'} ${(formulation.totalCacaoPercentage - formulation.freeButterPercentage).toFixed(1)}% + ${language === 'ru' ? 'Масло' : 'Butter'} ${formulation.freeButterPercentage.toFixed(1)}%`
+              : `${language === 'ru' ? '100% паста прямого отжима (0% масла)' : language === 'es' ? '100% pasta pura (0% manteca añadida)' : '100% pure paste (0% added butter)'}`}
           </span>
         </div>
 

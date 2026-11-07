@@ -64,15 +64,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${inter.variable} ${cormorant.variable}`}>
-      <body
-        className="antialiased"
-        style={{
-          margin: 0,
-          backgroundColor: "#030205",
-          color: "#e0e0e0",
-          minHeight: "100vh",
-        }}
-      >
+      <body className="antialiased bg-[#030205] text-[#e0e0e0] min-h-screen">
         <Providers>{children}</Providers>
       </body>
     </html>

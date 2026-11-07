@@ -90,13 +90,13 @@ export default function LabApp() {
             if (def && def.isPreset) {
               return {
                 ...r,
+                nameRu: def.nameRu,
+                nameEn: def.nameEn,
                 nameEs: def.nameEs || r.nameEs,
+                descriptionRu: def.descriptionRu,
+                descriptionEn: def.descriptionEn,
                 descriptionEs: def.descriptionEs || r.descriptionEs,
-                items:
-                  r.id === 'recipe_inca_master_70' &&
-                  r.items.some((i) => i.ingredientId === 'panela' && Math.abs(i.bakersPercentage - 45.8) < 0.2)
-                    ? def.items
-                    : r.items,
+                items: r.items,
               };
             }
             return r;
@@ -117,12 +117,25 @@ export default function LabApp() {
     if (!mounted) return;
     if (darkMode) {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+      document.body.classList.remove('bg-[#f8fafc]', 'text-slate-900');
+      document.body.classList.add('bg-[#030205]', 'text-[#e0e0e0]');
       localStorage.setItem('inca_lab_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.body.classList.remove('bg-[#030205]', 'text-[#e0e0e0]');
+      document.body.classList.add('bg-[#f8fafc]', 'text-slate-900');
       localStorage.setItem('inca_lab_theme', 'light');
     }
   }, [darkMode, mounted]);
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('bg-[#f8fafc]', 'text-slate-900');
+      document.body.classList.add('bg-[#030205]', 'text-[#e0e0e0]');
+    };
+  }, []);
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);

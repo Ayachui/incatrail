@@ -53,8 +53,8 @@ export const SocialMediaGeneratorView: React.FC<SocialMediaGeneratorViewProps> =
   // Generate fallback authentic text if server or API key is not present
   const getFallbackPost = (plt: Platform, md: Mood, agl: Angle): string => {
     const rawName = isRu ? recipe.nameRu : isEs ? (recipe.nameEs || recipe.nameEn) : recipe.nameEn;
-    const pureBasePct = formulation.pureCacaoBasePercentage.toFixed(0);
-    const productName = `${rawName} (${pureBasePct}% Base Cacao)`;
+    const cacaoInBarPct = formulation.totalCacaoPercentage.toFixed(1);
+    const productName = rawName;
 
     if (isRu) {
       if (plt === 'instagram') {
@@ -62,7 +62,7 @@ export const SocialMediaGeneratorView: React.FC<SocialMediaGeneratorViewProps> =
         
 В большинстве традиционного церемониального какао при попытке ощутить глубокое состояние вы сталкиваетесь с мышечным спазмом, тошнотой и тяжестью в ЖКТ. 
 
-Почему наша формула «${productName}» (${pureBasePct}% чистая основа семени) ощущается принципиально иначе?
+Почему наша формула «${productName}» (${cacaoInBarPct}% какао в плитке) ощущается принципиально иначе?
 ✨ Мы сохраняем живую матрицу семени: благодаря вакуумно-микроволновой дегидратации (FMAD) при низких температурах бобы минуют спонтанное брожение и обжарку. Сохраняется королевский фиолетовый пигмент и 63.5 мг/г нативных флаванолов.
 ✨ Умный симпорт SGLT1: стехиометрия нерафинированной панелы и морской соли мягко открывает эпителиальный барьер тонкого кишечника. Всасывание происходит уже на 15-й минуте.
 ✨ Никакого кофеинового спада: преобладание теобромина дарит длительное расширение капилляров, тепло в груди и кристальный ментальный фокус без тахикардии.
@@ -75,7 +75,7 @@ export const SocialMediaGeneratorView: React.FC<SocialMediaGeneratorViewProps> =
       } else if (plt === 'telegram') {
         return `⚡️ Фармакокинетика священного растения: почему от обычного сырого какао часто тошнит, а от фиолетового Nacional — нет?
 
-Разбираем биохимию матрицы «${productName}» (${pureBasePct}% чистая какао-база).
+Разбираем биохимию матрицы «${productName}» (${cacaoInBarPct}% какао).
 
 Многие практики церемониального какао знают этот неприятный симптом: выпиваешь густой напиток 40–50 г — и через 20 минут желудок скручивает спазм. 
 
@@ -99,7 +99,7 @@ The functional foods and luxury chocolate sectors are undergoing a tectonic shif
 At Inca Trail Foods, our R&D focus is anchored in high-altitude cloud forests of Zamora-Chinchipe, Ecuador (1,000–1,200m a.s.l.):
 • Direct ethical partnerships with indigenous Shuar farming communities (Napurak & Los Bayanes).
 • Proprietary FMAD processing: Eliminating spontaneous fermentation and thermal degradation preserves over 90% of native monomeric flavanols and the natural purple anthocyanin matrix.
-• Formulation "${productName}" (${pureBasePct}% unfermented cacao & butter core matrix): Engineered for maximized cellular bioavailability via active SGLT1 cotransport and presystemic enzymatic balance.
+• Formulation "${productName}" (${cacaoInBarPct}% in-bar native cacao solids): Engineered for maximized cellular bioavailability via active SGLT1 cotransport and presystemic enzymatic balance.
 
 We are establishing a new category: Grand Cru Nutraceutical Matrices.
 
@@ -111,7 +111,7 @@ For institutional inquiries, private retreats, and B2B sample allocations: visit
 
 Пишем вам из предгорий Амазонии, где реликтовые деревья Cacao Nacional дают плоды с семенами редчайшего фиолетового цвета.
 
-Сегодня мы открываем закрытую аллокацию формулы «${productName}» (${pureBasePct}% чистая основа какао).
+Сегодня мы открываем закрытую аллокацию формулы «${productName}» (${cacaoInBarPct}% какао в плитке).
 
 В отличие от магазинного шоколада или тяжелого ферментированного церемониального какао, эта формула разработана как гармоничная соматосенсорная система. 
 Она не вызывает спазмов и тошноты, не перегружает печень и не дает тремора. 20–30 граммов на языке раскрывают глубокое периферическое тепло, стимулируют выработку эндотелиального оксида азота и погружают в состояние сосредоточенного спокойствия.
@@ -127,7 +127,7 @@ For institutional inquiries, private retreats, and B2B sample allocations: visit
       if (plt === 'instagram') {
         return `✨ Más allá de lo ceremonial: La Matriz Viva de Cacao Púrpura de Zamora.
 
-Les presentamos «${productName}» (${pureBasePct}% base pura de cacao fino), cultivado en los bosques de niebla de Zamora-Chinchipe, Ecuador (1.200 m s.n.m.).
+Les presentamos «${productName}» (${cacaoInBarPct}% cacao en barra), cultivado en los bosques de niebla de Zamora-Chinchipe, Ecuador (1.200 m s.n.m.).
 
 ¿Alguna vez has sentido pesadez estomacal o náuseas con el cacao ceremonial tradicional? He aquí por qué nuestra formulación entrega euforia pura sin bajones:
 🟣 Antocianinas Púrpuras Vivas: Deshidratado al vacío a baja temperatura (FMAD) dentro de las 3 horas posteriores a la cosecha, sin fermentación espontánea y sin tostado térmico.
@@ -142,7 +142,7 @@ Lote exclusivo de laboratorio disponible en incatrailfoods.com (enlace en perfil
       } else if (plt === 'telegram') {
         return `⚡️ Farmacocinética de una planta sagrada: ¿Por qué el cacao crudo convencional provoca náuseas y el Cacao Púrpura Nacional no?
 
-Análisis biomecánico de la matriz «${productName}» (${pureBasePct}% base pura).
+Análisis biomecánico de la matriz «${productName}» (${cacaoInBarPct}% cacao total).
 
 Muchos facilitadores y practicantes de cacao ceremonial conocen este síntoma: tomas una dosis de 40–50 g y a los 20 minutos sientes un espasmo gástrico.
 
@@ -166,7 +166,7 @@ Los sectores de alimentos funcionales y chocolate ultra-premium demandan autenti
 En Inca Trail Foods, nuestra I+D se fundamenta en los bosques nubosos de Zamora-Chinchipe, Ecuador (1.000–1.200 m s.n.m.):
 • Alianzas comerciales éticas con comunidades indígenas Shuar (Napurak y Los Bayanes).
 • Procesamiento patentado FMAD: Deshidratación al vacío a baja temperatura que conserva más del 90% de flavonoles monoméricos y las antocianinas púrpuras vivas.
-• Formulación «${productName}» (${pureBasePct}% base pura): Diseñada para maximizar la biodisponibilidad celular mediante cotransporte SGLT1 e inhibición del primer paso hepático.
+• Formulación «${productName}» (${cacaoInBarPct}% cacao total): Diseñada para maximizar la biodisponibilidad celular mediante cotransporte SGLT1 e inhibición del primer paso hepático.
 
 Estamos definiendo una nueva categoría global: Matrices Nutracéuticas Grand Cru.
 
@@ -178,7 +178,7 @@ Para consultas institucionales, retiros de bienestar y muestras B2B: visite inca
 
 Le escribimos desde las estribaciones de la Amazonía ecuatoriana, donde los árboles relictos de Cacao Nacional producen semillas con un color púrpura extraordinario.
 
-Hoy abrimos la asignación privada de nuestra fórmula «${productName}» (${pureBasePct}% base pura de cacao).
+Hoy abrimos la asignación privada de nuestra fórmula «${productName}» (${cacaoInBarPct}% cacao total de cacao).
 
 A diferencia del chocolate comercial o del cacao ceremonial pesado, esta fórmula ha sido concebida como un sistema somatosensorial armónico. 
 No genera náuseas ni pesadez, no estresa el hígado y no produce temblores. Una porción de 20 a 30 gramos en el paladar despierta un calor expansivo en el pecho, activa la microcirculación y sumerge la mente en un estado de enfoque sereno.
@@ -195,7 +195,7 @@ El equipo de Inca Trail Foods`;
       if (plt === 'instagram') {
         return `✨ Beyond Ceremonial: The Living Purple Cacao Matrix.
 
-Meet "${productName}" (${pureBasePct}% Pure Cacao Base) from the high-altitude cloud forests of Zamora-Chinchipe, Ecuador (1,200m a.s.l.).
+Meet "${productName}" (${cacaoInBarPct}% Cacao in Bar) from the high-altitude cloud forests of Zamora-Chinchipe, Ecuador (1,200m a.s.l.).
 
 Ever experienced nausea or gastric heaviness from traditional raw cacao? Here is why our formulation delivers pure euphoria without the crash:
 🟣 Living Purple Anthocyanins: Processed via low-temp vacuum dehydration (FMAD) within 3 hours of harvest—no fermentation, zero roasting.
@@ -210,7 +210,7 @@ Private allocation now open at incatrailfoods.com (link in bio @incatrailfoods).
       } else {
         return `Bridging Amazonian Wisdom & Pharmacokinetic Precision.
 
-Introducing "${productName}" (${pureBasePct}% Pure Cacao Base) by Inca Trail Foods.
+Introducing "${productName}" (${cacaoInBarPct}% Cacao in Bar) by Inca Trail Foods.
 Sourced from native unfermented purple Cacao Nacional at 1,200m elevation in Ecuador.
 
 Key Highlights:
@@ -239,7 +239,7 @@ Reserve your allocation at incatrailfoods.com.`;
           angle,
           recipeName: isRu ? recipe.nameRu : isEs ? (recipe.nameEs || recipe.nameEn) : recipe.nameEn,
           language,
-          pureCacaoBasePercentage: formulation.pureCacaoBasePercentage.toFixed(0),
+          pureCacaoBasePercentage: formulation.totalCacaoPercentage.toFixed(1),
           bioMetrics: {
             flavanols: m.totalFlavanolsMgPer20g,
             multiplierEpicatechin: m.multiplierEpicatechin,

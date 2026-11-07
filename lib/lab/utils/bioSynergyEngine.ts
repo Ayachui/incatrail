@@ -177,13 +177,10 @@ export function calculateFormulation(
   const ajiChiliPercentage = (ajiChiliGrams / totalWeightGrams) * 100;
   const moringaPercentage = (moringaGrams / totalWeightGrams) * 100;
 
-  // Real cacao and butter core base (pure chocolate formula excluding spices/salts/adaptogens)
-  const coreChocolateWeightGrams = totalCacaoGrams + panelaGrams + milkPowderGrams;
-  const pureCacaoBasePercentage = coreChocolateWeightGrams > 0
-    ? (totalCacaoGrams / coreChocolateWeightGrams) * 100
-    : totalCacaoPercentage;
-  const pureCacaoPastePercentage = coreChocolateWeightGrams > 0
-    ? ((totalCacaoGrams - freeButterGrams) / coreChocolateWeightGrams) * 100
+  // Exact Cacao Solids in finished chocolate bar
+  const pureCacaoBasePercentage = totalCacaoPercentage;
+  const pureCacaoPastePercentage = totalWeightGrams > 0
+    ? ((totalCacaoGrams - freeButterGrams) / totalWeightGrams) * 100
     : totalCacaoPercentage;
 
   // 3. Hot Pepper / Chili & Piperine exact data integration from recipe
@@ -447,7 +444,7 @@ function calculateTemperingParameters(
   } else {
     // Zero-butter Pure
     return {
-      matrixTypeName: 'Безмасляная высокоплотная (Pure 70% / INCA 0% масла)',
+      matrixTypeName: 'Безмасляная высокоплотная (Zero Added Butter / Pure Terroir)',
       preCoolingTempC: 35.0,
       seedingTempC: 33.8,
       silkPercentage: 0.95,

@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const systemInstruction = `You are a world-class luxury copywriter and nutraceutical storyteller for Inca Trail Foods (incatrailfoods.com), an innovator producing unfermented purple cacao from high-altitude cloud forests in Zamora-Chinchipe, Ecuador.
 CRITICAL SAFETY RULE: Never disclose trade secrets, exact formula recipes, percentages of secret spices/adaptogens, proprietary equipment calibration, or confidential extraction methods. 
 Focus on the sensory luxury, high-altitude Andean terroir, ancestral Shuar indigenous partnership, FMAD low-temp preservation of living purple anthocyanins, and gentle sustained energy without jitters or nausea.
-The base core chocolate matrix is ${pureCacaoBasePercentage || '70'}% pure unfermented Cacao Nacional and cold-pressed cacao butter (refer to the core chocolate percentage as ${pureCacaoBasePercentage || '70'}% cacao base without diluting this number with minor spice additions).
+The finished chocolate bar contains exactly ${pureCacaoBasePercentage}% pure unfermented Cacao Nacional solids and cold-pressed cacao butter.
 Language of the post: Write strictly in ${targetLang}.
 Platform: ${platform || 'Instagram'}.
 Tone / Mood: ${mood || 'Luxury & Fine Food'}.
@@ -26,7 +26,7 @@ Product Name: ${recipeName || 'Native Purple Cacao Matrix'}.`;
     const prompt = `Write a captivating, highly engaging social media post for ${platform}.
 Tone: ${mood}.
 Focus: ${angle}.
-Base Chocolate Matrix: ${pureCacaoBasePercentage || '70'}% pure unfermented Nacional cacao.
+Cacao Content in Finished Bar: ${pureCacaoBasePercentage}%.
 Include:
 - Catchy hook
 - Evocative storytelling (Zamora cloud forest, FMAD living purple cacao, theobromine clarity)
