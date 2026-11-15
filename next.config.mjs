@@ -1,3 +1,7 @@
+const CAMPO_API_ORIGIN = (
+  process.env.CAMPO_API_ORIGIN || "https://tzunki.com"
+).replace(/\/$/, "");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
@@ -29,6 +33,18 @@ const nextConfig = {
       { source: "/life/", destination: "/life/index.html" },
       { source: "/pastacalc", destination: "/pastacalc/index.html" },
       { source: "/pastacalc/", destination: "/pastacalc/index.html" },
+      {
+        source: "/api/campo/batch/:path*",
+        destination: `${CAMPO_API_ORIGIN}/api/campo/batch/:path*`,
+      },
+      {
+        source: "/api/campo/entities",
+        destination: `${CAMPO_API_ORIGIN}/api/campo/entities`,
+      },
+      {
+        source: "/api/campo/entity-lots",
+        destination: `${CAMPO_API_ORIGIN}/api/campo/entity-lots`,
+      },
     ];
   },
   async headers() {
