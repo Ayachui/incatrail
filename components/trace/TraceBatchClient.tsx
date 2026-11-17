@@ -522,7 +522,7 @@ export default function TraceBatchClient({ batchId }: Props) {
           fetch("/api/campo/entities?kind=operator"),
           fetch("/api/campo/entities?kind=community"),
         ]);
-        const data = (await lotRes.json()) as {
+        const data = (await lotRes.json().catch(() => ({}))) as {
           ok?: boolean;
           lot?: TraceBatchLot;
           error?: string;
@@ -532,9 +532,13 @@ export default function TraceBatchClient({ batchId }: Props) {
         }
         if (cancelled) return;
         setLot(data.lot);
-        const f = (await fRes.json()) as { ok?: boolean; entities?: TraceEntity[] };
-        const o = (await oRes.json()) as { ok?: boolean; entities?: TraceEntity[] };
-        const c = (await cRes.json()) as { ok?: boolean; entities?: TraceEntity[] };
+        type EntitiesResp = { ok?: boolean; entities?: TraceEntity[] };
+        const [f, o, c] = await Promise.all([
+          fRes.ok ? (fRes.json().catch(() => ({})) as Promise<EntitiesResp>) : Promise.resolve({} as EntitiesResp),
+          oRes.ok ? (oRes.json().catch(() => ({})) as Promise<EntitiesResp>) : Promise.resolve({} as EntitiesResp),
+          cRes.ok ? (cRes.json().catch(() => ({})) as Promise<EntitiesResp>) : Promise.resolve({} as EntitiesResp),
+        ]);
+        if (cancelled) return;
         if (f.ok) setFarmers(f.entities || []);
         if (o.ok) setOperators(o.entities || []);
         if (c.ok) setCommunities(c.entities || []);

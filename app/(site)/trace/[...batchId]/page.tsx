@@ -2,10 +2,23 @@ import Link from "next/link";
 import TraceBatchClient from "@/components/trace/TraceBatchClient";
 import { displayTraceLotId } from "@/lib/trace-helpers";
 
-type Props = { params: { batchId: string } };
+type Props = { params: { batchId: string[] } };
+
+function decodeBatchId(parts: string[] | string): string {
+  const arr = Array.isArray(parts) ? parts : [parts];
+  return arr
+    .map((part) => {
+      try {
+        return decodeURIComponent(part);
+      } catch {
+        return part;
+      }
+    })
+    .join("/");
+}
 
 export async function generateMetadata({ params }: Props) {
-  const id = displayTraceLotId(decodeURIComponent(params.batchId));
+  const id = displayTraceLotId(decodeBatchId(params.batchId));
   return {
     title: `Trace ${id} · Inca Trail Foods`,
     description: "Public lot traceability — Inca Trail Foods",
@@ -13,7 +26,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default function TracePage({ params }: Props) {
-  const decoded = decodeURIComponent(params.batchId);
+  const decoded = decodeBatchId(params.batchId);
   return (
     <div>
       <div className="mx-auto max-w-lg px-4 pt-8 sm:px-6">

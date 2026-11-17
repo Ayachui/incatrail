@@ -1,5 +1,5 @@
 const CAMPO_API_ORIGIN = (
-  process.env.CAMPO_API_ORIGIN || "https://tzunki.com"
+  process.env.CAMPO_API_ORIGIN || "https://www.tzunki.com"
 ).replace(/\/$/, "");
 
 /** @type {import('next').NextConfig} */
