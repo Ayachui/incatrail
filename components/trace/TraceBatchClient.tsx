@@ -1022,60 +1022,54 @@ export default function TraceBatchClient({ batchId }: Props) {
                   </p>
                 )}
 
-                {burnProgress && (
-                  <div className="mt-3">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-teal-300">
-                      Quemas $TZNK · apoyo Amazonía
-                    </p>
-                    <p className="mt-1 text-[11px] text-white/60">
-                      Cada etapa: {TRACE_BURN_TZNK} $TZNK vía burn() (totalSupply). Lote sellado
-                      solo cuando todas las etapas requeridas están confirmadas on-chain.
-                    </p>
-                    <ul className="mt-3 space-y-2">
-                      {burnProgress.required.map((stage) => {
-                        const ev = lot.burnEvents?.find((x) => x.stage === stage);
-                        const onChain = ev && isOnChainBurn(ev) ? ev : null;
-                        const synthetic = ev && isSyntheticBurn(ev);
-                        return (
-                          <li
-                            key={stage}
-                            className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1 rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm"
-                          >
-                            <span className="font-medium text-white">
-                              {burnStageLabel(stage, lot.productType || "purple_gold")}
-                            </span>
-                            <span
-                              className={`text-[12px] ${
-                                onChain
-                                  ? "font-semibold text-teal-300"
-                                  : synthetic
-                                    ? "font-semibold text-amber-300"
-                                    : "text-white/55"
-                              }`}
+                {(() => {
+                  const onChainBurns = (lot.burnEvents || []).filter(isOnChainBurn);
+                  const totalBurned = onChainBurns.reduce(
+                    (acc, ev) => acc + (Number(ev.amountTznk) || 0),
+                    0,
+                  );
+                  if (onChainBurns.length === 0 && !(lot.totalTznkBurned && lot.totalTznkBurned > 0)) {
+                    return null;
+                  }
+                  const displayTotal = totalBurned || lot.totalTznkBurned || 0;
+                  return (
+                    <div className="mt-3 rounded-xl border border-amber-400/25 bg-amber-950/20 p-3">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-amber-300">
+                        Quemas $TZNK · apoyo al proyecto y ecosistema
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-amber-100">
+                        {displayTotal.toLocaleString("es-EC")} $TZNK quemados
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-white/65">
+                        Tokens $TZNK quemados para siempre en apoyo al proyecto y conservación de la
+                        Amazonía.
+                      </p>
+                      {onChainBurns.length > 0 && (
+                        <ul className="mt-2.5 space-y-1.5">
+                          {onChainBurns.map((ev) => (
+                            <li
+                              key={`${ev.stage}-${ev.txHash}`}
+                              className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1 rounded-lg border border-white/10 bg-black/25 px-2.5 py-1.5 text-xs"
                             >
-                              {onChain
-                                ? "Confirmado on-chain"
-                                : synthetic
-                                  ? "Solo prueba — falta burn real"
-                                  : "Pendiente"}
-                            </span>
-                            {onChain ? (
+                              <span className="font-medium text-white">
+                                {burnStageLabel(ev.stage, lot.productType || "purple_gold")} ·{" "}
+                                {(Number(ev.amountTznk) || 0).toLocaleString("es-EC")} $TZNK
+                              </span>
                               <a
-                                className="w-full truncate text-[11px] font-medium text-teal-300 underline"
-                                href={`${TRACE_BASESCAN_URL}/tx/${onChain.txHash}`}
+                                className="font-mono text-[11px] text-teal-300 underline"
+                                href={`${TRACE_BASESCAN_URL}/tx/${ev.txHash}`}
                                 target="_blank"
                                 rel="noreferrer"
                               >
-                                Basescan · {onChain.txHash.slice(0, 10)}…
-                                {onChain.txHash.slice(-6)}
+                                Basescan · {ev.txHash.slice(0, 10)}…{ev.txHash.slice(-6)}
                               </a>
-                            ) : null}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {(lot.easAttestations?.harvestUid ||
                   lot.easAttestations?.fmadUid ||
@@ -1128,11 +1122,51 @@ export default function TraceBatchClient({ batchId }: Props) {
                   </div>
                 )}
 
-                {lot.nftTokenId ? (
-                  <p className="mt-4 border-t border-white/10 pt-3 font-mono text-sm text-teal-100">
-                    NFT publicado · token #{lot.nftTokenId}
-                  </p>
-                ) : null}
+                {(lot.nftTokenId || lot.nftAsset?.tokenId) && (
+                  <div className="mt-4 rounded-xl border border-teal-400/25 bg-black/30 p-3">
+                    <p className="text-[11px] uppercase tracking-wider text-teal-300">
+                      NFT del lote (Almacén)
+                    </p>
+                    <p className="mt-1 font-mono text-sm text-teal-100">
+                      Token #{lot.nftAsset?.tokenId || lot.nftTokenId}
+                    </p>
+                    {lot.nftAsset?.txHash && (
+                      <p className="mt-1 text-xs text-white/70">
+                        Tx:{" "}
+                        <a
+                          href={`${TRACE_BASESCAN_URL}/tx/${lot.nftAsset.txHash}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-mono text-teal-300 underline"
+                        >
+                          {lot.nftAsset.txHash.slice(0, 10)}…{lot.nftAsset.txHash.slice(-6)}
+                        </a>
+                      </p>
+                    )}
+                    {lot.nftAsset?.recipientWallet && (
+                      <p className="mt-0.5 font-mono text-[11px] text-white/60">
+                        Titular: {lot.nftAsset.recipientWallet.slice(0, 6)}…
+                        {lot.nftAsset.recipientWallet.slice(-4)}
+                      </p>
+                    )}
+                    {lot.nftAsset?.metadataUri && (
+                      <p className="mt-0.5 truncate text-[11px] text-white/60">
+                        URI: <span className="font-mono">{lot.nftAsset.metadataUri}</span>
+                      </p>
+                    )}
+                    {lot.nftAsset?.metadata &&
+                      Object.keys(lot.nftAsset.metadata).length > 0 && (
+                        <dl className="mt-2 grid grid-cols-1 gap-1 border-t border-white/10 pt-2 text-[11px] sm:grid-cols-2">
+                          {Object.entries(lot.nftAsset.metadata).map(([k, v]) => (
+                            <div key={k} className="truncate text-white/70">
+                              <dt className="inline font-semibold text-white/85">{k}: </dt>
+                              <dd className="inline font-mono">{String(v)}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+                  </div>
+                )}
               </li>
             </ol>
           </>

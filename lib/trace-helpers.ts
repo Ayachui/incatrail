@@ -4,7 +4,8 @@ export type TraceBurnStage =
   | "intake"
   | "fmad_thermal_shock"
   | "drying_stabilized"
-  | "packaging";
+  | "packaging"
+  | "almacen_nft";
 
 export type TraceGeo = {
   lat: number;
@@ -92,6 +93,16 @@ export type TracePhotoLedgerEntry = {
   storyNote?: string;
 };
 
+export type TraceNftAssetRecord = {
+  tokenId: string;
+  contract?: string;
+  txHash?: string;
+  metadataUri?: string;
+  recipientWallet?: string;
+  mintedAt?: number;
+  metadata?: Record<string, string | number | boolean>;
+};
+
 export type TraceBatchLot = {
   id: string;
   productType?: TraceProductType;
@@ -103,6 +114,7 @@ export type TraceBatchLot = {
   fmadProtocol?: TraceFmadProtocol;
   packaging?: TracePackaging;
   burnEvents?: TraceBurnEvent[];
+  totalTznkBurned?: number;
   pendingBurnStages?: TraceBurnStage[];
   easAttestations?: {
     harvestUid?: string;
@@ -110,6 +122,7 @@ export type TraceBatchLot = {
     finalLotUid?: string;
   };
   nftTokenId?: string;
+  nftAsset?: TraceNftAssetRecord;
   qrCodeUrl?: string;
   stickerImageUrl?: string;
   buyerStory?: string;
@@ -217,6 +230,8 @@ export function burnStageLabel(
       return "Secado estabilizado";
     case "packaging":
       return "Envase y sellado";
+    case "almacen_nft":
+      return "Almacén · acuñación NFT";
   }
 }
 
