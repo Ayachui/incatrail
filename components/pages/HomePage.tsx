@@ -28,6 +28,7 @@ import {
   heroMediaClass,
   usePublicMedia,
 } from "@/hooks/usePublicMedia";
+import { B2BReserveClient } from "@/components/reserve/B2BReserveClient";
 import type { Lang } from "@/lib/i18n/translations";
 
 const PORTFOLIO_PDF: Record<Lang, string> = {
@@ -571,6 +572,9 @@ export default function HomePage() {
           </FadeIn>
         </div>
       </section>
+
+      {/* Live Lot Reserve B2B Showcase */}
+      <B2BReserveClient mode="preview" />
 
       {/* Contacts / Partnership */}
       <section id="contacts" className="py-24 md:py-32 bg-[#020104] border-t border-[#3b1c4a]/30">

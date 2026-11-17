@@ -25,6 +25,11 @@ const nextConfig = {
         hostname: "images.pexels.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/**",
+      },
     ],
   },
   async rewrites() {
@@ -44,6 +49,18 @@ const nextConfig = {
       {
         source: "/api/campo/entity-lots",
         destination: `${CAMPO_API_ORIGIN}/api/campo/entity-lots`,
+      },
+      {
+        source: "/api/itf/:path*",
+        destination: `${CAMPO_API_ORIGIN}/api/itf/:path*`,
+      },
+      {
+        source: "/api/ecosystem/:path*",
+        destination: `${CAMPO_API_ORIGIN}/api/ecosystem/:path*`,
+      },
+      {
+        source: "/api/oropurpura/:path*",
+        destination: `${CAMPO_API_ORIGIN}/api/oropurpura/:path*`,
       },
     ];
   },

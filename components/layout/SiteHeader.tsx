@@ -38,6 +38,12 @@ export function SiteHeader() {
             {t.nav.application}
           </Link>
           <Link
+            href="/products"
+            className="text-[#c39bd3] hover:text-white transition-colors duration-300"
+          >
+            {lang === "ru" ? "Резерв лотов" : lang === "es" ? "Reserva de Lotes" : "Live Reserve"}
+          </Link>
+          <Link
             href="/#tzunki"
             className="hover:text-[#c39bd3] transition-colors duration-300"
           >
