@@ -56,6 +56,11 @@ const COPY: Record<
     reserveCta: string;
     commercialCta: string;
     viewAllCta: string;
+    tabActive: string;
+    tabPast: string;
+    allocatedBadge: string;
+    emptyActiveText: string;
+    viewPastCta: string;
     emptyText: string;
     priceNote: string;
     modalTitleSample: string;
@@ -91,6 +96,12 @@ const COPY: Record<
     reserveCta: "Reservar volumen",
     commercialCta: "Consulta comercial B2B",
     viewAllCta: "Ver todo el inventario de lotes",
+    tabActive: "En stock ahora",
+    tabPast: "Lotes distribuidos",
+    allocatedBadge: "DISTRIBUIDO • 0 KG",
+    emptyActiveText:
+      "Los lotes actuales han sido asignados. Nuevas cosechas verificadas en Base L2 están en estabilización.",
+    viewPastCta: "Ver historial de lotes pasados",
     emptyText: "Actualmente estamos preparando los próximos lotes verificados en Base L2. Contáctanos para reservas anticipadas.",
     priceNote: "Precios B2B exclusivamente bajo cotización",
     modalTitleSample: "Solicitar muestra de lote",
@@ -126,6 +137,12 @@ const COPY: Record<
     reserveCta: "Reserve Volume",
     commercialCta: "Commercial Inquiry",
     viewAllCta: "Open full Live Lot Reserve",
+    tabActive: "Available in Stock",
+    tabPast: "Past / Allocated Lots",
+    allocatedBadge: "ALLOCATED • 0 KG",
+    emptyActiveText:
+      "Current lots have been fully allocated. Next Base L2 verified harvests are in preparation.",
+    viewPastCta: "View past verified lots",
     emptyText: "New Base L2 verified lots are currently being stabilized. Submit a commercial inquiry for upcoming harvests.",
     priceNote: "Wholesale pricing on request",
     modalTitleSample: "Request Lot Sample",
@@ -161,6 +178,12 @@ const COPY: Record<
     reserveCta: "Зарезервировать объём",
     commercialCta: "Коммерческий запрос",
     viewAllCta: "Открыть весь склад лотов",
+    tabActive: "В наличии сейчас",
+    tabPast: "Прошлые / Распределённые",
+    allocatedBadge: "РАСПРЕДЕЛЕНО • 0 КГ",
+    emptyActiveText:
+      "Текущие лоты полностью распределены. Следующие урожаи с NFT-верификацией готовятся к отгрузке.",
+    viewPastCta: "Посмотреть прошлые лоты",
     emptyText: "Очередные лоты с NFT-верификацией готовятся к отгрузке. Оставьте запрос для бронирования следующего урожая.",
     priceNote: "Цены предоставляются по запросу",
     modalTitleSample: "Запрос образцов лота",
@@ -187,6 +210,7 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
   const c = COPY[lang];
 
   const [lots, setLots] = useState<PublicB2BLot[]>([]);
+  const [viewFilter, setViewFilter] = useState<"active" | "past">("active");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -225,10 +249,13 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
     };
   }, []);
 
-  const visibleLots = useMemo(
-    () => (mode === "preview" ? lots.slice(0, 3) : lots),
-    [lots, mode],
-  );
+  const activeLots = useMemo(() => lots.filter((l) => (l.availableKg ?? 0) > 0), [lots]);
+  const pastLots = useMemo(() => lots.filter((l) => (l.availableKg ?? 0) <= 0), [lots]);
+
+  const visibleLots = useMemo(() => {
+    const source = viewFilter === "active" ? activeLots : pastLots;
+    return mode === "preview" ? source.slice(0, 3) : source;
+  }, [activeLots, pastLots, viewFilter, mode]);
 
   const openModal = (type: InquiryType, lot: PublicB2BLot | null) => {
     setInquiryType(type);
@@ -274,7 +301,7 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
   return (
     <section id="reserve" className="py-24 md:py-32 bg-[#050309] border-t border-[#3b1c4a]/30">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-8">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-3 mb-4">
               <div className="w-6 h-[1px] bg-[#9b59b6]" />
@@ -310,6 +337,34 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
           </div>
         </div>
 
+        {/* Sleek Active vs Past / Distributed Switcher */}
+        {!loading && !loadError && lots.length > 0 ? (
+          <div className="mb-10 inline-flex flex-wrap items-center gap-1.5 border border-[#3b1c4a]/70 bg-[#0a0612] p-1">
+            <button
+              type="button"
+              onClick={() => setViewFilter("active")}
+              className={`px-4 py-2 text-xs uppercase tracking-[0.14em] transition ${
+                viewFilter === "active"
+                  ? "bg-[#6b21a8] text-white font-medium shadow-[0_0_20px_rgba(107,33,168,0.35)]"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              {c.tabActive} ({activeLots.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewFilter("past")}
+              className={`px-4 py-2 text-xs uppercase tracking-[0.14em] transition ${
+                viewFilter === "past"
+                  ? "bg-[#3b1c4a] text-white font-medium"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              {c.tabPast} ({pastLots.length})
+            </button>
+          </div>
+        ) : null}
+
         {loading ? (
           <div className="grid gap-6 md:grid-cols-3">
             {[1, 2, 3].map((n) => (
@@ -322,14 +377,27 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
           </div>
         ) : !visibleLots.length ? (
           <div className="border border-[#3b1c4a]/50 bg-[#0a0612] p-10 text-center">
-            <p className="text-neutral-300 font-light">{c.emptyText}</p>
-            <button
-              type="button"
-              onClick={() => openModal("commercial", null)}
-              className="mt-6 inline-flex items-center gap-2 px-6 py-3 border border-[#6b21a8] text-[#c39bd3] text-xs uppercase tracking-[0.15em] hover:bg-[#6b21a8] hover:text-white transition"
-            >
-              {c.commercialCta}
-            </button>
+            <p className="text-neutral-300 font-light">
+              {viewFilter === "active" && pastLots.length > 0 ? c.emptyActiveText : c.emptyText}
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              {viewFilter === "active" && pastLots.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => setViewFilter("past")}
+                  className="inline-flex items-center gap-2 px-6 py-3 border border-[#3b1c4a] text-neutral-200 text-xs uppercase tracking-[0.15em] hover:border-[#c39bd3] hover:text-white transition"
+                >
+                  {c.viewPastCta} ({pastLots.length})
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => openModal("commercial", null)}
+                className="inline-flex items-center gap-2 px-6 py-3 border border-[#6b21a8] text-[#c39bd3] text-xs uppercase tracking-[0.15em] hover:bg-[#6b21a8] hover:text-white transition"
+              >
+                {c.commercialCta}
+              </button>
+            </div>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -342,7 +410,11 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
               return (
                 <article
                   key={lot.id}
-                  className="flex flex-col border border-[#3b1c4a]/60 bg-[#0a0612] hover:border-[#9b59b6]/70 transition-colors"
+                  className={`flex flex-col border bg-[#0a0612] transition-colors ${
+                    avail > 0
+                      ? "border-[#3b1c4a]/60 hover:border-[#9b59b6]/70"
+                      : "border-neutral-800/80 opacity-85 hover:opacity-100"
+                  }`}
                 >
                   {lot.heroImageUrl ? (
                     <div className="relative aspect-[16/9] overflow-hidden border-b border-[#3b1c4a]/40 bg-[#140a24]">
@@ -356,6 +428,11 @@ export function B2BReserveClient({ mode = "full" }: { mode?: "full" | "preview" 
                         <ShieldCheck size={12} />
                         Base L2 NFT #{lot.nftTokenId || "Verified"}
                       </span>
+                      {avail <= 0 ? (
+                        <span className="absolute top-3 right-3 bg-[#030205]/90 border border-neutral-600 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-neutral-300">
+                          {c.allocatedBadge}
+                        </span>
+                      ) : null}
                     </div>
                   ) : null}
 

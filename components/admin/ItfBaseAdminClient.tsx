@@ -7,6 +7,8 @@ type AdminLot = {
   sourceBatchId: string;
   subtitle: string;
   productLabel: string;
+  heroImageUrl?: string;
+  availablePhotos?: Array<{ url: string; stage: string }>;
   initialKg: number | null;
   manualAllocatedKg: number;
   productionAllocatedKg: number;
@@ -29,6 +31,17 @@ type AdminInquiry = {
 };
 
 const STORAGE_KEY = "itf_ecosystem_admin_token";
+
+function consumeHashToken(): string {
+  if (typeof window === "undefined") return "";
+  const hash = window.location.hash || "";
+  const m = /eco_token=([^&]+)/.exec(hash);
+  if (!m?.[1]) return "";
+  const tok = decodeURIComponent(m[1]).trim();
+  window.sessionStorage.setItem(STORAGE_KEY, tok);
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+  return tok;
+}
 
 function toHexUtf8(str: string): string {
   const bytes = new TextEncoder().encode(str);
@@ -53,6 +66,7 @@ export function ItfBaseAdminClient() {
   const [lots, setLots] = useState<AdminLot[]>([]);
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
   const [drafts, setDrafts] = useState<Record<string, { allocated: string; available: string }>>({});
+  const [hasInjectedWallet, setHasInjectedWallet] = useState(true);
 
   const checkSession = useCallback(async (tok?: string) => {
     try {
@@ -94,12 +108,23 @@ export function ItfBaseAdminClient() {
   }, []);
 
   useEffect(() => {
-    const saved = typeof window !== "undefined" ? window.sessionStorage.getItem(STORAGE_KEY) || "" : "";
+    setHasInjectedWallet(
+      typeof window !== "undefined" && Boolean((window as unknown as { ethereum?: unknown }).ethereum),
+    );
+    const fromHash = consumeHashToken();
+    const saved =
+      fromHash ||
+      (typeof window !== "undefined" ? window.sessionStorage.getItem(STORAGE_KEY) || "" : "");
     if (saved) setToken(saved);
     void checkSession(saved).then((ok) => {
       if (ok) void loadData(saved);
     });
   }, [checkSession, loadData]);
+
+  const openBaseSso = () => {
+    const ret = encodeURIComponent(`${window.location.origin}/admin`);
+    window.location.href = `https://www.tzunki.com/base/ops?returnTo=${ret}`;
+  };
 
   const handleWalletSignIn = async () => {
     setBusy(true);
@@ -107,9 +132,8 @@ export function ItfBaseAdminClient() {
     try {
       const eth = (window as unknown as { ethereum?: Eip1193Provider }).ethereum;
       if (!eth) {
-        throw new Error(
-          "Web3 wallet provider not detected in this browser. Open tzunki.com/base/ops to sign in with Base Account passkey.",
-        );
+        openBaseSso();
+        return;
       }
       const accounts = (await eth.request({ method: "eth_requestAccounts" })) as string[];
       const addr = accounts?.[0]?.toLowerCase();
@@ -167,6 +191,28 @@ export function ItfBaseAdminClient() {
     }
   };
 
+  const handleSaveHero = async (lot: AdminLot, heroImageUrl: string) => {
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await fetch(`/api/itf/admin/inventory/${encodeURIComponent(lot.id)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        credentials: "include",
+        body: JSON.stringify({ heroImageUrl }),
+      });
+      const json = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !json.ok) throw new Error(json.error || "Failed to update cover photo");
+      setNotice(`Updated cover photo for ${lot.subtitle}`);
+      await loadData(token);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Save failed");
+    }
+  };
+
   const handleConfirmReserve = async (inq: AdminInquiry) => {
     setError(null);
     setNotice(null);
@@ -200,7 +246,7 @@ export function ItfBaseAdminClient() {
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <a
-            href="https://tzunki.com/base/ops"
+            href="https://www.tzunki.com/base/ops"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 border border-[#6b21a8] text-xs uppercase tracking-wider text-[#c39bd3] hover:bg-[#6b21a8] hover:text-white transition"
@@ -234,8 +280,21 @@ export function ItfBaseAdminClient() {
             onClick={() => void handleWalletSignIn()}
             className="w-full py-3 bg-[#6b21a8] text-white text-xs uppercase tracking-widest hover:bg-[#7e22ce] disabled:opacity-50"
           >
-            {busy ? "Waiting for signature…" : "Connect & Sign with Base L2 Wallet"}
+            {busy
+              ? "Waiting for signature…"
+              : hasInjectedWallet
+                ? "Connect & Sign with Base L2 Wallet"
+                : "Connect via Base Account / WalletConnect ↗"}
           </button>
+          {hasInjectedWallet ? (
+            <button
+              type="button"
+              onClick={openBaseSso}
+              className="w-full py-2.5 border border-[#3b1c4a] text-[#c39bd3] text-xs uppercase tracking-wider hover:border-[#6b21a8]"
+            >
+              Sign in via Base Account Passkey ↗
+            </button>
+          ) : null}
           {error ? <p className="text-xs text-red-400">{error}</p> : null}
         </div>
       ) : (
@@ -250,14 +309,15 @@ export function ItfBaseAdminClient() {
                 allocated: String(lot.allocatedKg ?? 0),
                 available: String(lot.availableKg ?? 0),
               };
+              const photos = lot.availablePhotos || [];
               return (
                 <div key={lot.id} className="border border-[#3b1c4a] bg-[#0a0612] p-5 space-y-3">
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-start gap-3">
                     <div>
                       <p className="font-mono text-xs text-[#c39bd3]">{lot.subtitle}</p>
                       <h2 className="font-serif text-xl">{lot.productLabel}</h2>
                     </div>
-                    <span className="font-mono text-sm">Total: {total} kg</span>
+                    <span className="font-mono text-sm shrink-0">Total: {total} kg</span>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <label>
@@ -302,6 +362,44 @@ export function ItfBaseAdminClient() {
                   >
                     Save Balance
                   </button>
+
+                  {photos.length > 0 ? (
+                    <div className="pt-3 border-t border-[#3b1c4a]/70 space-y-2">
+                      <div className="flex items-center justify-between gap-2 text-[11px] font-mono text-neutral-400">
+                        <span>COVER PHOTO (B2B SHOWCASE)</span>
+                        <button
+                          type="button"
+                          onClick={() => void handleSaveHero(lot, "")}
+                          className="text-[#c39bd3] hover:text-white underline"
+                        >
+                          Auto
+                        </button>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {photos.map((ph) => {
+                          const isSelected = lot.heroImageUrl === ph.url;
+                          return (
+                            <button
+                              key={ph.url}
+                              type="button"
+                              title={ph.stage}
+                              onClick={() => void handleSaveHero(lot, ph.url)}
+                              className={`relative w-14 h-14 overflow-hidden border transition ${
+                                isSelected
+                                  ? "border-[#c39bd3] ring-2 ring-[#c39bd3]"
+                                  : "border-[#3b1c4a] opacity-75 hover:opacity-100"
+                              }`}
+                            >
+                              <img src={ph.url} alt={ph.stage} className="w-full h-full object-cover" />
+                              <span className="absolute bottom-0 inset-x-0 bg-black/75 text-[9px] font-mono text-neutral-200 px-1 truncate">
+                                {ph.stage}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               );
             })}
