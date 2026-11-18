@@ -9,49 +9,49 @@ export function SiteHeader() {
 
   return (
     <nav className="fixed w-full z-50 top-0 transition-all duration-500 bg-[#030205]/80 backdrop-blur-xl border-b border-[#3b1c4a]/30">
-      <div className="max-w-7xl mx-auto px-6 h-20 md:h-24 flex items-center justify-between">
-        <BrandLogo />
+      <div className="max-w-7xl mx-auto px-6 h-20 md:h-24 flex items-center justify-between gap-4">
+        <BrandLogo className="shrink-0" />
 
-        <div className="hidden lg:flex gap-8 text-[11px] font-light tracking-[0.15em] uppercase text-neutral-400">
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[11px] font-light tracking-[0.15em] uppercase text-neutral-400 whitespace-nowrap">
           <Link
             href="/#philosophy"
-            className="hover:text-[#c39bd3] transition-colors duration-300"
+            className="whitespace-nowrap hover:text-[#c39bd3] transition-colors duration-300"
           >
             {t.nav.concept}
           </Link>
           <Link
             href="/#process"
-            className="hover:text-[#c39bd3] transition-colors duration-300"
+            className="whitespace-nowrap hover:text-[#c39bd3] transition-colors duration-300"
           >
             {t.nav.process}
           </Link>
           <Link
             href="/#comparison"
-            className="hover:text-[#c39bd3] transition-colors duration-300"
+            className="whitespace-nowrap hover:text-[#c39bd3] transition-colors duration-300"
           >
             {t.nav.profile}
           </Link>
           <Link
             href="/#application"
-            className="hover:text-[#c39bd3] transition-colors duration-300"
+            className="whitespace-nowrap hover:text-[#c39bd3] transition-colors duration-300"
           >
             {t.nav.application}
           </Link>
           <Link
             href="/products"
-            className="text-[#c39bd3] hover:text-white transition-colors duration-300"
+            className="whitespace-nowrap text-[#c39bd3] hover:text-white transition-colors duration-300"
           >
-            {lang === "ru" ? "Резерв лотов" : lang === "es" ? "Reserva de Lotes" : "Live Reserve"}
+            {lang === "ru" ? "Лоты" : lang === "es" ? "Lotes" : "Lots"}
           </Link>
           <Link
             href="/#tzunki"
-            className="hover:text-[#c39bd3] transition-colors duration-300"
+            className="whitespace-nowrap hover:text-[#c39bd3] transition-colors duration-300"
           >
             {t.nav.blockchain}
           </Link>
         </div>
 
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center gap-4 md:gap-6 shrink-0 whitespace-nowrap">
           <div className="flex items-center gap-2 text-xs md:text-sm font-light uppercase tracking-widest text-neutral-600">
             <button
               type="button"
@@ -80,7 +80,7 @@ export function SiteHeader() {
 
           <Link
             href="/#contacts"
-            className="hidden md:inline-flex px-6 py-3 border border-[#6b21a8] text-[#c39bd3] text-xs font-light tracking-[0.15em] uppercase hover:bg-[#6b21a8] hover:text-white transition-all duration-500"
+            className="hidden md:inline-flex whitespace-nowrap px-6 py-3 border border-[#6b21a8] text-[#c39bd3] text-xs font-light tracking-[0.15em] uppercase hover:bg-[#6b21a8] hover:text-white transition-all duration-500"
           >
             {t.nav.contact}
           </Link>

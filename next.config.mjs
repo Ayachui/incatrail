@@ -1,6 +1,10 @@
-const CAMPO_API_ORIGIN = (
+const RAW_CAMPO_API_ORIGIN = (
   process.env.CAMPO_API_ORIGIN || "https://www.tzunki.com"
 ).replace(/\/$/, "");
+const CAMPO_API_ORIGIN = RAW_CAMPO_API_ORIGIN.replace(
+  /^https:\/\/tzunki\.com$/i,
+  "https://www.tzunki.com",
+);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
